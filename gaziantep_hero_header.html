@@ -1,0 +1,421 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&family=Noto+Serif:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 520px;
+    background: #1a0f05;
+    overflow: hidden;
+    font-family: 'Noto Serif', serif;
+  }
+
+  .mosaic-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background-image:
+      repeating-conic-gradient(#c8822a 0% 25%, transparent 0% 50%) 0 0 / 32px 32px,
+      repeating-conic-gradient(#8b5e1a 0% 25%, transparent 0% 50%) 16px 16px / 32px 32px;
+  }
+
+  .copper-arch {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 420px;
+    border-radius: 450px 450px 0 0;
+    background: radial-gradient(ellipse at 50% 20%, #3d1f06 0%, #1a0f05 70%);
+    border-top: 1px solid #c8822a33;
+  }
+
+  .geometric-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid #c8822a;
+    opacity: 0.15;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .ring-1 { width: 600px; height: 600px; top: -200px; right: -150px; animation-delay: 0s; }
+  .ring-2 { width: 400px; height: 400px; top: -120px; right: -80px; animation-delay: 1.5s; }
+  .ring-3 { width: 200px; height: 200px; top: -30px; right: 20px; animation-delay: 3s; }
+
+  .left-ornament {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background: linear-gradient(to right, #2d1508cc, transparent);
+  }
+
+  .diamond-pattern {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    opacity: 0.4;
+  }
+
+  .diamond {
+    width: 18px;
+    height: 18px;
+    background: #c8822a;
+    transform: rotate(45deg);
+  }
+  .diamond.green { background: #4a7c3f; }
+  .diamond.empty { background: transparent; border: 1px solid #c8822a44; }
+
+  .content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 520px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .city-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    animation: fadeDown 0.8s ease forwards;
+  }
+
+  .city-label-line {
+    height: 1px;
+    width: 50px;
+    background: linear-gradient(to right, transparent, #c8822a);
+  }
+  .city-label-line.right {
+    background: linear-gradient(to left, transparent, #c8822a);
+  }
+
+  .city-label-text {
+    font-family: 'Crimson Pro', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: #c8822a;
+    text-transform: uppercase;
+  }
+
+  .main-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 900;
+    font-size: clamp(42px, 8vw, 88px);
+    color: #f5d07a;
+    letter-spacing: 0.05em;
+    line-height: 0.95;
+    animation: fadeDown 0.9s ease 0.1s both;
+    text-shadow: 0 0 80px #c8822a44;
+  }
+
+  .title-accent {
+    display: block;
+    font-size: 0.45em;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 300;
+    font-style: italic;
+    color: #c8822a;
+    letter-spacing: 0.25em;
+    margin-top: 0.4em;
+    margin-bottom: 0.2em;
+  }
+
+  .subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: clamp(15px, 2.2vw, 20px);
+    color: #c8822a99;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 2rem;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+
+  .tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 1px solid #c8822a44;
+    border-radius: 2px;
+    background: #c8822a0d;
+    font-size: 12px;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: #e8b86d;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .tag:hover {
+    background: #c8822a22;
+    border-color: #c8822a88;
+    color: #f5d07a;
+  }
+
+  .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c8822a;
+    flex-shrink: 0;
+  }
+  .tag-dot.green { background: #4a7c3f; }
+  .tag-dot.gold { background: #f5d07a; }
+
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 2.5rem;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+
+  .btn-primary {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: #1a0f05;
+    background: linear-gradient(135deg, #f5d07a, #c8822a);
+    border: none;
+    padding: 14px 32px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #fce99a, #e09a40);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: #c8822a;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover { color: #f5d07a; }
+  .btn-secondary::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+  }
+  .btn-secondary:hover::after { width: 36px; }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #4a7c3f, #c8822a, #f5d07a, #c8822a, #4a7c3f, transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  .star-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #f5d07a;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  .pistachio-accent {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.08;
+  }
+
+  .nav-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 24px;
+    animation: fadeUp 1s ease 1s both;
+  }
+
+  .nav-item {
+    font-family: 'Crimson Pro', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #c8822a55;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-item:hover {
+    color: #c8822a;
+    border-bottom-color: #c8822a44;
+  }
+
+  .xp-bar-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #c8822a22;
+  }
+  .xp-bar-fill {
+    height: 100%;
+    width: 36%;
+    background: linear-gradient(to right, #4a7c3f, #f5d07a);
+    transition: width 2s ease;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.08; transform: scale(1); }
+    50% { opacity: 0.18; transform: scale(1.02); }
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+</style>
+
+<div class="hero">
+  <div class="xp-bar-wrapper"><div class="xp-bar-fill" id="xpFill"></div></div>
+
+  <div class="mosaic-bg"></div>
+
+  <div class="geometric-ring ring-1"></div>
+  <div class="geometric-ring ring-2"></div>
+  <div class="geometric-ring ring-3"></div>
+
+  <div class="left-ornament"></div>
+
+  <div class="diamond-pattern">
+    <div class="diamond"></div><div class="diamond green"></div><div class="diamond"></div>
+    <div class="diamond empty"></div><div class="diamond"></div><div class="diamond empty"></div>
+    <div class="diamond green"></div><div class="diamond empty"></div><div class="diamond green"></div>
+    <div class="diamond"></div><div class="diamond green"></div><div class="diamond"></div>
+    <div class="diamond empty"></div><div class="diamond"></div><div class="diamond empty"></div>
+    <div class="diamond green"></div><div class="diamond empty"></div><div class="diamond green"></div>
+  </div>
+
+  <div class="star-field" id="stars"></div>
+
+  <svg class="pistachio-accent" width="180" height="280" viewBox="0 0 180 280" fill="none">
+    <ellipse cx="90" cy="80" rx="35" ry="55" fill="#4a7c3f" opacity="0.8"/>
+    <ellipse cx="90" cy="80" rx="18" ry="30" fill="#2d5c28" opacity="0.6"/>
+    <path d="M 55 80 Q 90 20 125 80" stroke="#6aaa5a" stroke-width="2" fill="none" opacity="0.5"/>
+    <rect x="82" y="132" width="16" height="80" rx="8" fill="#6b4423" opacity="0.6"/>
+    <ellipse cx="90" cy="220" rx="30" ry="8" fill="#4a7c3f" opacity="0.3"/>
+    <ellipse cx="130" cy="100" rx="22" ry="35" fill="#4a7c3f" opacity="0.5" transform="rotate(25 130 100)"/>
+    <ellipse cx="50" cy="110" rx="22" ry="35" fill="#4a7c3f" opacity="0.5" transform="rotate(-20 50 110)"/>
+  </svg>
+
+  <div class="copper-arch"></div>
+
+  <div class="content">
+    <div class="city-label">
+      <div class="city-label-line"></div>
+      <span class="city-label-text">UNESCO Gastronomy Capital · 6000 BC</span>
+      <div class="city-label-line right"></div>
+    </div>
+
+    <h1 class="main-title">
+      GAZİANTEP
+      <span class="title-accent">Dünyanın En İyi Fıstığının Yurdu</span>
+    </h1>
+
+    <p class="subtitle">Where ancient copper meets the scent of baklava</p>
+
+    <div class="tag-row">
+      <div class="tag"><div class="tag-dot gold"></div>Baklava Kingdom</div>
+      <div class="tag"><div class="tag-dot green"></div>Pistachio Heritage</div>
+      <div class="tag"><div class="tag-dot"></div>Zeugma Mosaics</div>
+      <div class="tag"><div class="tag-dot gold"></div>400+ Registered Dishes</div>
+      <div class="tag"><div class="tag-dot green"></div>6,000 Years of History</div>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn-primary" onclick="sendPrompt('Start the Gaziantep exploration quest for me')">Start Exploring</button>
+      <button class="btn-secondary">View the Map</button>
+    </div>
+  </div>
+
+  <div class="bottom-bar"></div>
+</div>
+
+<script>
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 60 + '%';
+    s.style.animationDelay = Math.random() * 4 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    starsEl.appendChild(s);
+  }
+
+  setTimeout(() => {
+    document.getElementById('xpFill').style.width = '48%';
+  }, 400);
+</script>

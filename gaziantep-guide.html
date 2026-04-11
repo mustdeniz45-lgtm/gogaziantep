@@ -1,0 +1,3897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaziantep — City of Legends</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9961a;
+    --gold-light: #f0c040;
+    --rust: #8b3a1a;
+    --cream: #f5ecd7;
+    --dark: #1a1008;
+    --deep: #2c1a0a;
+    --green: #2a5c3f;
+    --accent: #e05c2a;
+    --text: #3a2010;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ---- NOISE OVERLAY ---- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    background: 
+      radial-gradient(ellipse at 30% 60%, rgba(201,150,26,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(139,58,26,0.2) 0%, transparent 50%),
+      linear-gradient(160deg, #0d0804 0%, #1e1005 40%, #2a1a08 70%, #1a0c04 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(45deg, transparent, transparent 60px, rgba(201,150,26,0.03) 60px, rgba(201,150,26,0.03) 61px),
+      repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(201,150,26,0.03) 60px, rgba(201,150,26,0.03) 61px);
+  }
+
+  .hero-ornament {
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.6;
+    letter-spacing: 1rem;
+    animation: pulse 3s ease-in-out infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.9;
+    background: linear-gradient(135deg, #c9961a 0%, #f0c040 40%, #e8a820 60%, #c9961a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    color: rgba(245,236,215,0.7);
+    margin: 1.5rem 0 2.5rem;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .badge {
+    background: rgba(201,150,26,0.1);
+    border: 1px solid rgba(201,150,26,0.3);
+    border-radius: 2rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(201,150,26,0.5);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ---- GAMIFICATION BAR ---- */
+  .game-bar {
+    background: linear-gradient(90deg, #0d0804, #1e1005, #0d0804);
+    border-bottom: 2px solid rgba(201,150,26,0.3);
+    border-top: 2px solid rgba(201,150,26,0.3);
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .game-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .xp-display {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .xp-bar-wrap {
+    width: 120px;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .level-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, var(--gold), var(--rust));
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: white;
+  }
+
+  .checklist-score {
+    font-size: 0.8rem;
+    color: rgba(245,236,215,0.7);
+  }
+
+  .checklist-score span {
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  /* ---- NAV ---- */
+  .nav-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1.5rem 2rem 1rem;
+    background: rgba(13,8,4,0.8);
+  }
+
+  .nav-pill {
+    background: transparent;
+    border: 1px solid rgba(201,150,26,0.3);
+    color: rgba(245,236,215,0.7);
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+    font-family: 'Lato', sans-serif;
+  }
+
+  .nav-pill:hover, .nav-pill.active {
+    background: rgba(201,150,26,0.15);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* ---- SECTIONS ---- */
+  section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.5rem auto 0;
+  }
+
+  /* ---- CARDS GRID ---- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: linear-gradient(135deg, rgba(44,26,10,0.8), rgba(26,16,8,0.9));
+    border: 1px solid rgba(201,150,26,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201,150,26,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(201,150,26,0.08);
+  }
+
+  .card-emoji {
+    font-size: 3rem;
+    display: block;
+    padding: 1.8rem 1.5rem 0.5rem;
+  }
+
+  .card-check {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(201,150,26,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .card-check.checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* ── PHOTO UPLOAD ON CARDS ── */
+  .card-photo-area {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.4s cubic-bezier(0.34,1.2,0.64,1);
+    background: rgba(0,0,0,0.3);
+  }
+  .card-photo-area.has-photo { height: 180px; }
+  .card-photo-area.empty     { height: 0; }
+
+  .card-photo-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+  }
+
+  .card-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,5,2,0.85) 0%, transparent 50%);
+    display: flex;
+    align-items: flex-end;
+    padding: 0.6rem;
+    gap: 0.4rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card-photo-area:hover .card-photo-overlay { opacity: 1; }
+
+  .photo-overlay-btn {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(201,150,26,0.35);
+    color: var(--cream);
+    border-radius: 1rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Lato', sans-serif;
+  }
+  .photo-overlay-btn:hover { background: rgba(201,150,26,0.25); border-color: var(--gold); }
+  .photo-overlay-btn.danger { border-color: rgba(200,60,60,0.4); }
+  .photo-overlay-btn.danger:hover { background: rgba(200,60,60,0.2); }
+
+  .card-photo-upload-btn {
+    width: 100%;
+    background: rgba(201,150,26,0.04);
+    border: 1.5px dashed rgba(201,150,26,0.2);
+    border-radius: 0;
+    color: rgba(201,150,26,0.55);
+    padding: 0.55rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+  .card-photo-upload-btn:hover {
+    background: rgba(201,150,26,0.1);
+    border-color: rgba(201,150,26,0.5);
+    color: var(--gold-light);
+  }
+  .card.has-photo-data .card-photo-upload-btn { display: none; }
+
+  .card-photo-count {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: rgba(201,150,26,0.85);
+    color: var(--dark);
+    border-radius: 1rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+    display: none;
+  }
+  .card.has-photo-data .card-photo-count { display: block; }
+
+  /* ── ALBUM MODAL ── */
+  .album-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,2,1,0.97);
+    backdrop-filter: blur(12px);
+    z-index: 9500;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    overflow: hidden;
+  }
+  .album-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .album-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid rgba(201,150,26,0.15);
+    background: rgba(10,5,2,0.6);
+    flex-shrink: 0;
+  }
+  .album-title-group {}
+  .album-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+  .album-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+  }
+  .album-close {
+    background: none;
+    border: 1px solid rgba(201,150,26,0.25);
+    color: rgba(245,236,215,0.5);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .album-close:hover { background: rgba(201,150,26,0.1); color: var(--cream); border-color: var(--gold); }
+
+  .album-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+  }
+  .album-body::-webkit-scrollbar { width: 4px; }
+  .album-body::-webkit-scrollbar-thumb { background: rgba(201,150,26,0.3); border-radius: 2px; }
+
+  .album-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(245,236,215,0.35);
+  }
+  .album-empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+  .album-empty-text { font-size: 1rem; line-height: 1.6; }
+
+  /* Album grid */
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .album-item {
+    background: rgba(26,16,8,0.8);
+    border: 1px solid rgba(201,150,26,0.15);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+    position: relative;
+  }
+  .album-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 20px rgba(201,150,26,0.08);
+    border-color: rgba(201,150,26,0.3);
+  }
+  .album-item.selected {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(201,150,26,0.4);
+  }
+  .album-item-sel-badge {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    width: 26px; height: 26px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .album-item.selected .album-item-sel-badge { opacity: 1; }
+
+  .album-item-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  .album-item-info {
+    padding: 0.9rem 1rem;
+  }
+  .album-item-emoji { font-size: 1.1rem; margin-right: 0.4rem; }
+  .album-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+  .album-item-cat {
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .album-item-date {
+    font-size: 0.68rem;
+    color: rgba(245,236,215,0.35);
+    margin-top: 0.3rem;
+  }
+
+  /* Lightbox */
+  .album-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .album-lightbox.open { opacity: 1; pointer-events: all; }
+  .lb-inner { position: relative; max-width: 900px; width: 100%; }
+  .lb-img { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; }
+  .lb-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+  .lb-close {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+    background: none;
+    border: none;
+    color: rgba(245,236,215,0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .lb-close:hover { color: var(--cream); }
+
+  /* Album footer & share */
+  .album-footer {
+    padding: 1.2rem 2rem;
+    border-top: 1px solid rgba(201,150,26,0.15);
+    background: rgba(10,5,2,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .album-stats {
+    font-size: 0.8rem;
+    color: rgba(245,236,215,0.4);
+  }
+  .album-stats strong { color: var(--gold-light); }
+
+  .album-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .album-btn {
+    background: rgba(201,150,26,0.08);
+    border: 1px solid rgba(201,150,26,0.25);
+    color: var(--gold-light);
+    padding: 0.55rem 1.1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: 'Lato', sans-serif;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .album-btn:hover { background: rgba(201,150,26,0.18); border-color: var(--gold); color: var(--cream); }
+  .album-btn.primary {
+    background: linear-gradient(135deg, var(--gold), #a07010);
+    color: var(--dark);
+    border-color: transparent;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .album-btn.primary:hover { transform: scale(1.03); box-shadow: 0 4px 16px rgba(201,150,26,0.3); }
+
+  /* ── SHARE CARD (canvas export) ── */
+  .share-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,2,1,0.96);
+    backdrop-filter: blur(16px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .share-modal.open { opacity: 1; pointer-events: all; }
+  .share-inner {
+    background: linear-gradient(160deg, #1e1005, #0d0604);
+    border: 1px solid rgba(201,150,26,0.25);
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    padding: 2rem;
+    position: relative;
+  }
+  .share-header {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .share-sub {
+    font-size: 0.8rem;
+    color: rgba(245,236,215,0.4);
+    margin-bottom: 1.5rem;
+  }
+  #shareCanvas {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  .share-socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.4); }
+  .social-btn.twitter  { background: #000; color: #fff; }
+  .social-btn.instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: #fff; }
+  .social-btn.whatsapp { background: #25D366; color: #fff; }
+  .social-btn.download { background: linear-gradient(135deg, var(--gold), #a07010); color: var(--dark); }
+  .share-copy {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,150,26,0.2);
+    color: rgba(245,236,215,0.6);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .share-copy:hover { background: rgba(201,150,26,0.08); border-color: rgba(201,150,26,0.4); }
+  .share-close-btn {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    color: rgba(245,236,215,0.4);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+  }
+  .share-close-btn:hover { color: var(--cream); }
+
+  /* NAV album pill */
+  .album-nav-pill {
+    background: linear-gradient(135deg, rgba(201,150,26,0.15), rgba(139,58,26,0.1));
+    border-color: rgba(201,150,26,0.4) !important;
+    color: var(--gold-light) !important;
+  }
+  .album-nav-pill .photo-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--dark);
+    border-radius: 1rem;
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    margin-left: 0.3rem;
+    padding: 0 4px;
+  }
+
+  /* Upload progress ring on card */
+  .card-uploading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10,5,2,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    z-index: 5;
+  }
+
+  .card-body {
+    padding: 0.5rem 1.5rem 1.5rem;
+  }
+
+  .card-category {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: rgba(245,236,215,0.65);
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-size: 0.7rem;
+    background: rgba(201,150,26,0.08);
+    border: 1px solid rgba(201,150,26,0.2);
+    color: rgba(245,236,215,0.6);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+  }
+
+  .xp-tag {
+    font-size: 0.7rem;
+    background: rgba(42,92,63,0.3);
+    border: 1px solid rgba(42,92,63,0.5);
+    color: #7ec8a0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    margin-left: auto;
+  }
+
+  /* ---- FOOD SECTION ---- */
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .food-card {
+    background: linear-gradient(135deg, rgba(44,26,10,0.7), rgba(26,16,8,0.9));
+    border: 1px solid rgba(201,150,26,0.12);
+    border-radius: 10px;
+    padding: 1.2rem;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .food-card:hover {
+    border-color: rgba(201,150,26,0.35);
+    transform: translateY(-2px);
+  }
+
+  .food-card .food-emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  .food-card .food-name { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 0.3rem; }
+  .food-card .food-desc { font-size: 0.78rem; color: rgba(245,236,215,0.6); line-height: 1.5; }
+
+  /* ---- PRACTICAL INFO ---- */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .info-card {
+    background: linear-gradient(135deg, rgba(44,26,10,0.6), rgba(26,16,8,0.8));
+    border: 1px solid rgba(201,150,26,0.12);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .info-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .info-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .info-list { list-style: none; }
+  .info-list li {
+    font-size: 0.85rem;
+    color: rgba(245,236,215,0.75);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    line-height: 1.5;
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-list li strong { color: var(--cream); }
+
+  /* ---- QUEST BOARD ---- */
+  .quest-board {
+    background: linear-gradient(135deg, rgba(44,26,10,0.6), rgba(26,16,8,0.8));
+    border: 1px solid rgba(201,150,26,0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quest-board::before {
+    content: '⚔';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 8rem;
+    opacity: 0.04;
+  }
+
+  .quest-list { list-style: none; }
+
+  .quest-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.2s;
+  }
+
+  .quest-item:last-child { border-bottom: none; }
+
+  .quest-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(201,150,26,0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.3s;
+    background: transparent;
+  }
+
+  .quest-checkbox.done {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .quest-checkbox.done::after { content: '✓'; color: white; font-size: 0.75rem; }
+
+  .quest-text { flex: 1; }
+  .quest-name { font-size: 0.9rem; color: var(--cream); margin-bottom: 0.2rem; }
+  .quest-reward { font-size: 0.75rem; color: #7ec8a0; }
+  .quest-difficulty {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    flex-shrink: 0;
+  }
+  .diff-easy { background: rgba(42,92,63,0.3); color: #7ec8a0; }
+  .diff-medium { background: rgba(201,150,26,0.2); color: var(--gold-light); }
+  .diff-hard { background: rgba(139,58,26,0.3); color: #f08060; }
+
+  /* ---- ACHIEVEMENT POPUP ---- */
+  .achievement-popup {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: linear-gradient(135deg, #2c1a0a, #1a0c04);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    z-index: 9999;
+    transform: translateX(200%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 280px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(201,150,26,0.2);
+  }
+
+  .achievement-popup.show { transform: translateX(0); }
+  .achievement-title { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold); letter-spacing: 0.1em; }
+  .achievement-name { font-size: 1rem; color: var(--cream); margin-top: 0.2rem; }
+  .achievement-xp { font-size: 0.8rem; color: #7ec8a0; margin-top: 0.3rem; }
+
+  /* ---- MAP SECTION ---- */
+  .map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(201,150,26,0.2);
+    height: 420px;
+    background: linear-gradient(135deg, rgba(44,26,10,0.8), rgba(26,16,8,0.9));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* ---- TRIVIA SECTION ---- */
+  .trivia-box {
+    background: linear-gradient(135deg, rgba(44,26,10,0.8), rgba(26,16,8,0.95));
+    border: 1px solid rgba(201,150,26,0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .trivia-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .trivia-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .trivia-option {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,150,26,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    color: rgba(245,236,215,0.8);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .trivia-option:hover { background: rgba(201,150,26,0.1); border-color: rgba(201,150,26,0.4); }
+  .trivia-option.correct { background: rgba(42,92,63,0.3); border-color: #7ec8a0; color: #7ec8a0; }
+  .trivia-option.wrong { background: rgba(139,58,26,0.3); border-color: #f08060; color: #f08060; }
+
+  .trivia-feedback {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(245,236,215,0.7);
+    min-height: 1.5rem;
+  }
+
+  .trivia-next {
+    margin-top: 1rem;
+    background: linear-gradient(135deg, var(--gold), var(--rust));
+    color: white;
+    border: none;
+    padding: 0.7rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    display: none;
+    transition: all 0.2s;
+  }
+
+  .trivia-next:hover { transform: scale(1.03); }
+  .trivia-score {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---- LEADERBOARD ---- */
+  .leaderboard {
+    background: linear-gradient(135deg, rgba(44,26,10,0.7), rgba(26,16,8,0.9));
+    border: 1px solid rgba(201,150,26,0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .lb-rank { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); width: 30px; }
+  .lb-name { flex: 1; font-size: 0.9rem; }
+  .lb-xp { font-size: 0.8rem; color: var(--gold-light); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: linear-gradient(180deg, #0d0804, #060402);
+    border-top: 1px solid rgba(201,150,26,0.15);
+    text-align: center;
+    padding: 3rem 2rem;
+    color: rgba(245,236,215,0.4);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  /* SECTION BG ALTERNATION */
+  .section-bg {
+    background: rgba(26,16,8,0.3);
+    border-radius: 0;
+  }
+
+  /* HERO CTA */
+  .hero-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), #a07010);
+    color: var(--dark);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 1rem 2.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .hero-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(201,150,26,0.4);
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding: 1rem 0; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    transform: translateX(-50%);
+  }
+  .tl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  .tl-item:nth-child(odd) { flex-direction: row; }
+  .tl-item:nth-child(even) { flex-direction: row-reverse; }
+  .tl-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px; height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 3px solid var(--dark);
+    box-shadow: 0 0 10px rgba(201,150,26,0.5);
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+  }
+  .tl-content {
+    width: calc(50% - 2rem);
+    background: linear-gradient(135deg,rgba(44,26,10,0.7),rgba(26,16,8,0.9));
+    border: 1px solid rgba(201,150,26,0.15);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .tl-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .tl-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+  .tl-desc { font-size: 0.8rem; color: rgba(245,236,215,0.6); line-height: 1.5; }
+  @media(max-width:640px) {
+    .timeline::before { left: 16px; }
+    .tl-item, .tl-item:nth-child(even) { flex-direction: column; padding-left: 2.5rem; }
+    .tl-dot { left: 16px; top: 0.3rem; }
+    .tl-content { width: 100%; }
+  }
+  /* Subsection header */
+  .sub-header { 
+    font-family:'Cinzel',serif;
+    color:var(--gold);
+    font-size:1rem;
+    letter-spacing:0.1em;
+    margin-bottom:1.5rem;
+    padding-left:0.8rem;
+    border-left:3px solid var(--gold);
+  }
+
+
+    .trivia-options { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 3rem; }
+  }
+
+  /* Stars bg */
+  .stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Highlight band */
+  .highlight-band {
+    background: linear-gradient(135deg, rgba(201,150,26,0.08), rgba(139,58,26,0.05));
+    border-top: 1px solid rgba(201,150,26,0.15);
+    border-bottom: 1px solid rgba(201,150,26,0.15);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .highlight-stats {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,236,215,0.5);
+    margin-top: 0.3rem;
+  }
+
+  /* Progress tracker */
+  .progress-section {
+    background: rgba(26,16,8,0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    height: 14px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rust), var(--gold), var(--gold-light));
+    border-radius: 8px;
+    transition: width 0.6s ease;
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
+    color: rgba(245,236,215,0.5);
+  }
+
+  /* Rank title */
+  .rank-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--gold-light);
+    margin-left: 0.5rem;
+  }
+
+  /* ════════════════════════════════════
+     ONBOARDING MODAL
+  ════════════════════════════════════ */
+  .ob-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,5,2,0.92);
+    backdrop-filter: blur(8px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .ob-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .ob-modal {
+    background: linear-gradient(160deg, #1e1005 0%, #150b04 60%, #0d0604 100%);
+    border: 1px solid rgba(201,150,26,0.25);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(201,150,26,0.06);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .ob-overlay.open .ob-modal {
+    transform: translateY(0) scale(1);
+  }
+
+  /* scrollbar */
+  .ob-modal::-webkit-scrollbar { width: 4px; }
+  .ob-modal::-webkit-scrollbar-track { background: transparent; }
+  .ob-modal::-webkit-scrollbar-thumb { background: rgba(201,150,26,0.3); border-radius: 2px; }
+
+  .ob-header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid rgba(201,150,26,0.12);
+    position: sticky;
+    top: 0;
+    background: linear-gradient(160deg, #1e1005, #150b04);
+    z-index: 2;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .ob-progress-track {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 1.2rem;
+  }
+  .ob-progress-step {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .ob-progress-step.done { background: var(--gold); }
+  .ob-progress-step.active { background: rgba(201,150,26,0.5); }
+
+  .ob-step-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(201,150,26,0.6);
+    margin-bottom: 0.4rem;
+  }
+  .ob-question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  .ob-body { padding: 1.5rem 2rem; }
+
+  /* Options grid */
+  .ob-options {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .ob-options.cols-2 { grid-template-columns: 1fr 1fr; }
+  .ob-options.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .ob-options.cols-1 { grid-template-columns: 1fr; }
+
+  .ob-option {
+    background: rgba(255,255,255,0.03);
+    border: 1.5px solid rgba(201,150,26,0.15);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ob-option:hover {
+    border-color: rgba(201,150,26,0.4);
+    background: rgba(201,150,26,0.06);
+    transform: translateY(-1px);
+  }
+  .ob-option.selected {
+    border-color: var(--gold);
+    background: rgba(201,150,26,0.12);
+    box-shadow: 0 0 0 1px rgba(201,150,26,0.25);
+  }
+  .ob-option.selected .ob-opt-icon { transform: scale(1.15); }
+
+  .ob-opt-icon { font-size: 1.6rem; flex-shrink: 0; transition: transform 0.2s; }
+  .ob-opt-text {}
+  .ob-opt-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--cream);
+    margin-bottom: 0.15rem;
+  }
+  .ob-opt-desc {
+    font-size: 0.75rem;
+    color: rgba(245,236,215,0.5);
+    line-height: 1.4;
+  }
+
+  /* multi-select hint */
+  .ob-hint {
+    font-size: 0.72rem;
+    color: rgba(201,150,26,0.5);
+    margin-top: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Day selector */
+  .ob-days {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .ob-day-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1.5px solid rgba(201,150,26,0.15);
+    border-radius: 50px;
+    padding: 0.7rem 1.8rem;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--cream);
+    transition: all 0.2s;
+  }
+  .ob-day-btn:hover { border-color: rgba(201,150,26,0.4); background: rgba(201,150,26,0.06); }
+  .ob-day-btn.selected {
+    border-color: var(--gold);
+    background: rgba(201,150,26,0.15);
+    color: var(--gold-light);
+    box-shadow: 0 0 0 1px rgba(201,150,26,0.2);
+  }
+  .ob-day-label {
+    font-size: 0.75rem;
+    color: rgba(245,236,215,0.5);
+    margin-top: 0.3rem;
+    text-align: center;
+  }
+  .ob-day-wrap { text-align: center; }
+
+  .ob-footer {
+    padding: 1.2rem 2rem 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,150,26,0.1);
+    gap: 1rem;
+  }
+
+  .ob-btn-back {
+    background: transparent;
+    border: 1px solid rgba(201,150,26,0.2);
+    color: rgba(245,236,215,0.5);
+    padding: 0.7rem 1.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .ob-btn-back:hover { border-color: rgba(201,150,26,0.4); color: var(--cream); }
+
+  .ob-btn-next {
+    background: linear-gradient(135deg, var(--gold), #a07010);
+    color: var(--dark);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+  .ob-btn-next:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(201,150,26,0.35); }
+  .ob-btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* Loading state */
+  .ob-loading {
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+  .ob-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid rgba(201,150,26,0.15);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ob-loading-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(245,236,215,0.7);
+  }
+  .ob-loading-sub {
+    font-size: 0.8rem;
+    color: rgba(245,236,215,0.35);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── ROUTE RESULT ─── */
+  .ob-result { padding: 0 2rem 2rem; }
+
+  .route-hero-banner {
+    background: linear-gradient(135deg, rgba(201,150,26,0.12), rgba(139,58,26,0.1));
+    border: 1px solid rgba(201,150,26,0.2);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .route-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .route-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(245,236,215,0.7);
+  }
+  .route-badges {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 0.8rem;
+  }
+  .route-badge {
+    background: rgba(201,150,26,0.1);
+    border: 1px solid rgba(201,150,26,0.25);
+    border-radius: 1rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+  }
+
+  .route-day {
+    margin-bottom: 1.5rem;
+  }
+  .route-day-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .route-day-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, var(--gold), var(--rust));
+    color: white;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-weight: 900;
+  }
+  .route-day-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--cream);
+  }
+  .route-day-theme {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .route-stops {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 16px;
+    border-left: 2px solid rgba(201,150,26,0.2);
+    margin-left: 15px;
+  }
+  .route-stop {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 0 0.75rem 1rem;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .route-stop::before {
+    content: '';
+    position: absolute;
+    left: -6px; top: 50%;
+    transform: translateY(-50%);
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 2px solid var(--dark);
+  }
+  .route-stop-time {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    min-width: 52px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .route-stop-info {}
+  .route-stop-name {
+    font-size: 0.9rem;
+    color: var(--cream);
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .route-stop-detail {
+    font-size: 0.78rem;
+    color: rgba(245,236,215,0.55);
+    line-height: 1.5;
+  }
+  .route-stop-tags {
+    display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.3rem;
+  }
+  .route-stop-tag {
+    font-size: 0.65rem;
+    background: rgba(201,150,26,0.08);
+    border: 1px solid rgba(201,150,26,0.18);
+    color: rgba(245,236,215,0.6);
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+  }
+  .xp-pill {
+    font-size: 0.65rem;
+    background: rgba(42,92,63,0.25);
+    border: 1px solid rgba(42,92,63,0.4);
+    color: #7ec8a0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+  }
+
+  .route-tip {
+    background: rgba(201,150,26,0.06);
+    border: 1px solid rgba(201,150,26,0.15);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(245,236,215,0.65);
+    font-style: italic;
+  }
+
+  .route-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;
+  }
+  .route-action-btn {
+    background: transparent;
+    border: 1px solid rgba(201,150,26,0.3);
+    color: var(--gold-light);
+    padding: 0.6rem 1.3rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: 'Lato', sans-serif;
+    transition: all 0.2s;
+  }
+  .route-action-btn:hover { background: rgba(201,150,26,0.1); border-color: var(--gold); }
+  .route-action-btn.primary {
+    background: linear-gradient(135deg, var(--gold), #a07010);
+    color: var(--dark);
+    border-color: transparent;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .route-action-btn.primary:hover { transform: scale(1.03); box-shadow: 0 4px 16px rgba(201,150,26,0.3); }
+
+  /* Error state */
+  .ob-error {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(245,236,215,0.6);
+  }
+  .ob-error-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .ob-error-msg { font-size: 0.9rem; line-height: 1.6; }
+
+  /* Hero route button */
+  .hero-cta-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(201,150,26,0.08);
+    border: 1.5px solid rgba(201,150,26,0.35);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .hero-cta-secondary:hover {
+    background: rgba(201,150,26,0.18);
+    border-color: var(--gold);
+    transform: scale(1.03);
+    box-shadow: 0 6px 24px rgba(201,150,26,0.2);
+  }
+
+  @media (max-width: 520px) {
+    .ob-options.cols-2 { grid-template-columns: 1fr; }
+    .ob-options.cols-3 { grid-template-columns: 1fr 1fr; }
+    .ob-header, .ob-body, .ob-footer, .ob-result { padding-left: 1.2rem; padding-right: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     ALBUM MODAL
+═══════════════════════════════════════════════════ -->
+<div class="album-overlay" id="albumOverlay">
+  <div class="album-topbar">
+    <div class="album-title-group">
+      <div class="album-label">✦ My Gaziantep Journey</div>
+      <div class="album-title" id="albumTitleText">Photo Album</div>
+    </div>
+    <button class="album-close" onclick="closeAlbum()">✕</button>
+  </div>
+  <div class="album-body" id="albumBody">
+    <div class="album-empty">
+      <div class="album-empty-icon">📷</div>
+      <div class="album-empty-text">No photos yet.<br>Visit a place and upload a photo to start your album.</div>
+    </div>
+  </div>
+  <div class="album-footer">
+    <div class="album-stats" id="albumStats">0 photos · 0 locations</div>
+    <div class="album-actions">
+      <button class="album-btn" id="albumSelectAllBtn" onclick="albumToggleSelectAll()">☐ Select All</button>
+      <button class="album-btn" onclick="closeAlbum()">✕ Close</button>
+      <button class="album-btn primary" id="albumShareBtn" onclick="openShareModal()">✦ Create & Share</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="album-lightbox" id="albumLightbox" onclick="closeLightbox()">
+  <div class="lb-inner" onclick="event.stopPropagation()">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SHARE MODAL
+═══════════════════════════════════════════════════ -->
+<div class="share-modal" id="shareModal">
+  <div class="share-inner">
+    <button class="share-close-btn" onclick="closeShareModal()">✕</button>
+    <div class="share-header">✦ Share Your Journey</div>
+    <div class="share-sub" id="shareSubText">Generating your travel card…</div>
+    <canvas id="shareCanvas" width="1080" height="1080" style="display:none;"></canvas>
+    <img id="sharePreviewImg" style="width:100%;border-radius:10px;display:none;margin-bottom:1.2rem;box-shadow:0 8px 30px rgba(0,0,0,0.5);" alt="Share card">
+    <div class="share-socials" id="shareSocials" style="display:none;">
+      <button class="social-btn download" onclick="shareDownload()">⬇ Download Image</button>
+      <button class="social-btn whatsapp" onclick="shareWhatsApp()">💬 WhatsApp</button>
+      <button class="social-btn twitter" onclick="shareTwitter()">𝕏 Twitter / X</button>
+      <button class="social-btn instagram" onclick="shareInstagram()">📸 Instagram</button>
+    </div>
+    <button class="share-copy" id="shareCopyBtn" onclick="copyShareText()" style="display:none;">📋 Copy caption for social media</button>
+    <div id="shareLoadingState" style="text-align:center;padding:2rem;color:rgba(245,236,215,0.5);">
+      <div class="ob-spinner" style="margin:0 auto 1rem;"></div>
+      <div>Building your travel card…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="photoFileInput" accept="image/*" style="display:none;" multiple>
+
+<!-- ═══════════════════════════════════════════════════
+     ACHIEVEMENT POPUP
+═══════════════════════════════════════════════════ -->
+<div class="achievement-popup" id="achievementPopup">
+  <div class="achievement-title">🏆 ACHIEVEMENT UNLOCKED</div>
+  <div class="achievement-name" id="achievementName">Explorer!</div>
+  <div class="achievement-xp" id="achievementXP">+50 XP</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     ONBOARDING MODAL
+═══════════════════════════════════════════════════ -->
+<div class="ob-overlay" id="obOverlay">
+  <div class="ob-modal" id="obModal">
+
+    <!-- HEADER (progress + question) -->
+    <div class="ob-header" id="obHeader">
+      <div class="ob-progress-track" id="obProgressTrack"></div>
+      <div class="ob-step-label" id="obStepLabel">QUESTION 1 OF 6</div>
+      <div class="ob-question" id="obQuestion">Loading…</div>
+    </div>
+
+    <!-- BODY (options / day picker) -->
+    <div class="ob-body" id="obBody"></div>
+
+    <!-- FOOTER (back / next) -->
+    <div class="ob-footer" id="obFooter">
+      <button class="ob-btn-back" id="obBtnBack" onclick="obBack()">← Back</button>
+      <button class="ob-btn-next" id="obBtnNext" onclick="obNext()" disabled>Continue →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="stars" id="starsContainer"></div>
+  
+  <div class="hero-ornament">✦ ✦ ✦</div>
+  <h1>GAZIANTEP</h1>
+  <p class="hero-subtitle">UNESCO Gastronomy Capital · City of Legends · Gateway to Ancient Worlds</p>
+  
+  <div class="hero-badges">
+    <span class="badge">🫒 Pistachio Capital</span>
+    <span class="badge">🍮 Baklava Birthplace</span>
+    <span class="badge">🏛️ 5,000 Years of History</span>
+    <span class="badge">🎖️ War of Independence Hero City</span>
+  </div>
+  
+  <div class="hero-cta-group">
+    <button class="hero-cta-secondary" onclick="openOnboarding()">🗺️ Plan My Route</button>
+    <a href="#explore" class="hero-cta">Begin Your Quest</a>
+  </div>
+  
+  <div class="scroll-hint">
+    <span>Scroll to Explore</span>
+    <span>▼</span>
+  </div>
+</div>
+
+<!-- GAMIFICATION BAR -->
+<div class="game-bar">
+  <div class="game-bar-left">
+    <div class="level-badge" id="levelBadge">1</div>
+    <div>
+      <div class="xp-display">
+        Explorer<span class="rank-title" id="rankTitle">"Newcomer"</span>
+        — <span id="xpAmount">0</span> / <span id="xpNeeded">100</span> XP
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+    </div>
+    <div class="checklist-score">Places visited: <span id="visitCount">0</span> / <span id="visitTotal">0</span></div>
+  </div>
+  <div style="font-size:0.75rem; color:rgba(245,236,215,0.4); letter-spacing:0.1em;">ANTEP QUEST TRACKER</div>
+</div>
+
+<!-- NAV -->
+<div class="nav-pills">
+  <a href="#explore" class="nav-pill">🗺️ Landmarks</a>
+  <a href="#antik" class="nav-pill">🏛️ Antik Kentler</a>
+  <a href="#muzeler" class="nav-pill">🏺 Müzeler</a>
+  <a href="#tarihi" class="nav-pill">🕌 Tarihi Yapılar</a>
+  <a href="#food" class="nav-pill">🍽️ Gastronomi</a>
+  <a href="#elsanatlari" class="nav-pill">🔨 El Sanatları</a>
+  <a href="#quests" class="nav-pill">⚔️ Görevler</a>
+  <a href="#trivia" class="nav-pill">🎯 Trivia</a>
+  <a href="#practical" class="nav-pill">ℹ️ Bilgi</a>
+  <a href="#leaderboard" class="nav-pill">🏆 Sıralama</a>
+  <button class="nav-pill album-nav-pill" onclick="openAlbum()" id="albumNavPill">📸 My Album <span class="photo-count-badge" id="albumNavCount" style="display:none;">0</span></button>
+</div>
+
+<!-- STATS BAND -->
+<div class="highlight-band">
+  <div class="highlight-stats">
+    <div class="stat-item">
+      <span class="stat-number">6,000</span>
+      <span class="stat-label">Yıllık Yerleşim Tarihi</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">107</span>
+      <span class="stat-label">Tescilli Coğrafi İşaretli Ürün</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">400+</span>
+      <span class="stat-label">Geleneksel Yemek</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">#1</span>
+      <span class="stat-label">UNESCO Gastronomi Şehri</span>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE SECTION -->
+<section id="explore">
+  <div class="section-header">
+    <div class="section-label">📍 Destinations</div>
+    <h2 class="section-title">Must-Visit Landmarks</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-title">LANDMARK PROGRESS</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="landmarkProgress" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="landmarkText">Check off places as you visit them to earn XP</div>
+  </div>
+
+  <div class="cards-grid" id="landmarksGrid">
+    <!-- JS generated -->
+  </div>
+</section>
+
+<!-- FOOD SECTION -->
+<section id="food" style="background:linear-gradient(180deg,rgba(26,16,8,0.4),transparent)">
+  <div class="section-header">
+    <div class="section-label">🍽️ Gastronomy</div>
+    <h2 class="section-title">The Food Bible</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div style="text-align:center; color:rgba(245,236,215,0.6); margin-bottom:2rem; max-width:600px; margin-inline:auto; font-size:0.9rem; line-height:1.7;">
+    Gaziantep is a <strong style="color:var(--gold-light)">UNESCO Creative City of Gastronomy</strong>. The cuisine has been refined over millennia and boasts over 400 registered dishes. Eating here is not optional — it's mandatory.
+  </div>
+
+  <div class="food-grid" id="foodGrid">
+    <!-- JS generated -->
+  </div>
+
+  <div style="margin-top:3rem;">
+    <div class="section-header">
+      <div class="section-label">🏪 Top Restaurants</div>
+      <h2 class="section-title" style="font-size:1.8rem;">Where to Eat</h2>
+    </div>
+    <div class="cards-grid" id="restaurantsGrid"></div>
+  </div>
+</section>
+
+<!-- ANTİK KENTLER -->
+<section id="antik" style="background:linear-gradient(180deg,rgba(13,8,4,0.5),rgba(26,16,8,0.3))">
+  <div class="section-header">
+    <div class="section-label">🏛️ KTB Resmi Kaynaktan</div>
+    <h2 class="section-title">Antik Kentler & Arkeolojik Alanlar</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="cards-grid" id="antikGrid"></div>
+</section>
+
+<!-- MÜZELER -->
+<section id="muzeler">
+  <div class="section-header">
+    <div class="section-label">🏺 Gaziantep Müzeleri</div>
+    <h2 class="section-title">Müzeler</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="cards-grid" id="muzelerGrid"></div>
+</section>
+
+<!-- TARİHİ YAPILAR -->
+<section id="tarihi" style="background:linear-gradient(180deg,rgba(26,16,8,0.4),transparent)">
+  <div class="section-header">
+    <div class="section-label">🕌 Tarihi Doku</div>
+    <h2 class="section-title">Tarihi Yapılar & Gezilecek Yerler</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div style="margin-bottom:3rem;">
+    <h3 style="font-family:'Cinzel',serif;color:var(--gold);font-size:1rem;letter-spacing:0.1em;margin-bottom:1.5rem;padding-left:0.5rem;border-left:3px solid var(--gold);">🕌 TARİHİ CAMİLER</h3>
+    <div class="cards-grid" id="camilerGrid"></div>
+  </div>
+  <div style="margin-bottom:3rem;">
+    <h3 style="font-family:'Cinzel',serif;color:var(--gold);font-size:1rem;letter-spacing:0.1em;margin-bottom:1.5rem;padding-left:0.5rem;border-left:3px solid var(--gold);">🏛️ HANLAR & HAMAMLAR</h3>
+    <div class="cards-grid" id="hanlarGrid"></div>
+  </div>
+  <div style="margin-bottom:3rem;">
+    <h3 style="font-family:'Cinzel',serif;color:var(--gold);font-size:1rem;letter-spacing:0.1em;margin-bottom:1.5rem;padding-left:0.5rem;border-left:3px solid var(--gold);">⛪ KİLİSELER, HAVRA & İNANÇ TURİZMİ</h3>
+    <div class="cards-grid" id="kiliselerGrid"></div>
+  </div>
+  <div style="margin-bottom:3rem;">
+    <h3 style="font-family:'Cinzel',serif;color:var(--gold);font-size:1rem;letter-spacing:0.1em;margin-bottom:1.5rem;padding-left:0.5rem;border-left:3px solid var(--gold);">🏡 TARİHİ ANTEP EVLERİ & MESİRE YERLERİ</h3>
+    <div class="cards-grid" id="evlerGrid"></div>
+  </div>
+</section>
+
+<!-- EL SANATLARI -->
+<section id="elsanatlari">
+  <div class="section-header">
+    <div class="section-label">🔨 Geleneksel Kültür</div>
+    <h2 class="section-title">Geleneksel El Sanatları</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div style="text-align:center;color:rgba(245,236,215,0.65);max-width:700px;margin:0 auto 2.5rem;font-size:0.9rem;line-height:1.8;">
+    Gaziantep'te <strong style="color:var(--gold-light)">107 tescilli coğrafi işaretli ürün</strong> bulunmaktadır. Geleneksel el sanatları nesiller boyu aktarılarak günümüze ulaşmıştır.
+  </div>
+  <div class="food-grid" id="elsanatGrid"></div>
+  <div style="margin-top:3rem;">
+    <div class="section-header">
+      <div class="section-label">🛍️ Ne Alınır?</div>
+      <h2 class="section-title" style="font-size:1.8rem;">Gaziantep'ten Götürülecekler</h2>
+    </div>
+    <div class="food-grid" id="nealinirGrid"></div>
+  </div>
+</section>
+
+<!-- TARİH ŞERİDİ -->
+<section id="tarihserit" style="background:linear-gradient(180deg,rgba(26,16,8,0.5),rgba(13,8,4,0.3))">
+  <div class="section-header">
+    <div class="section-label">⏳ 6.000 Yıllık Yolculuk</div>
+    <h2 class="section-title">Gaziantep Tarih Şeridi</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="timeline" id="timelineContainer"></div>
+</section>
+
+<!-- QUEST BOARD -->
+<section id="quests">
+  <div class="section-header">
+    <div class="section-label">⚔️ Gamified Challenges</div>
+    <h2 class="section-title">Quest Board</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="quest-board">
+    <ul class="quest-list" id="questList">
+      <!-- JS generated -->
+    </ul>
+  </div>
+</section>
+
+<!-- TRIVIA -->
+<section id="trivia">
+  <div class="section-header">
+    <div class="section-label">🎯 Test Your Knowledge</div>
+    <h2 class="section-title">Antep Trivia</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="trivia-box">
+    <div class="trivia-score">Score: <span id="triviaScore">0</span> / <span id="triviaTotal">0</span></div>
+    <div class="trivia-question" id="triviaQuestion">Loading question...</div>
+    <div class="trivia-options" id="triviaOptions"></div>
+    <div class="trivia-feedback" id="triviaFeedback"></div>
+    <button class="trivia-next" id="triviaNext" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</section>
+
+<!-- PRACTICAL INFO -->
+<section id="practical">
+  <div class="section-header">
+    <div class="section-label">ℹ️ Essential Info</div>
+    <h2 class="section-title">Traveller's Handbook</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="info-grid" id="infoGrid">
+    <!-- JS generated -->
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard">
+  <div class="section-header">
+    <div class="section-label">🏆 Hall of Fame</div>
+    <h2 class="section-title">Explorer Rankings</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="leaderboard">
+    <div id="leaderboardRows"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">✦ GAZİANTEP ✦</div>
+  <p>Tarihin ve Lezzetin Buluştuğu Şehir</p>
+  <p style="margin-top:0.5rem;">Gaziantep / Antep — Güneydoğu Anadolu, Türkiye</p>
+  <p style="margin-top:1rem;font-size:0.7rem;opacity:0.5;">İçerik kaynakları: gaziantep.ktb.gov.tr (T.C. Kültür ve Turizm Bakanlığı) & Google Places</p>
+  <p style="margin-top:0.3rem;font-size:0.7rem;opacity:0.4;">☎️ +90 (342) 280 17 00 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f29b99869fc0c5b2998690dc959d84dc8680">[email&#160;protected]</a> · Alo 176</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ===== DATA =====
+
+const landmarks = [
+  {
+    id: 'zeugma',
+    emoji: '🏛️',
+    cat: 'Museum',
+    title: 'Zeugma Mosaic Museum',
+    desc: 'World\'s largest mosaic museum housing breathtaking 2,000-year-old Roman mosaics, including the iconic "Gypsy Girl." An absolute must-visit.',
+    hours: '8:30 AM – 4:30 PM daily',
+    price: '~€12',
+    xp: 80
+  },
+  {
+    id: 'castle',
+    emoji: '🏰',
+    cat: 'Historical',
+    title: 'Gaziantep Castle',
+    desc: 'A Roman-Byzantine castle sitting atop a rocky hill in the heart of the city. Now houses the Defence & War of Independence Museum.',
+    hours: '8:30 AM – 5:00 PM',
+    price: 'Free',
+    xp: 60
+  },
+  {
+    id: 'culinary',
+    emoji: '🍽️',
+    cat: 'Museum',
+    title: 'Culinary Museum',
+    desc: 'The Emine Göğüş Culinary Museum traces Gaziantep\'s UNESCO-recognized food heritage through kitchenware, recipes, and tasting experiences.',
+    hours: '8:30 AM – 5:30 PM',
+    price: '~5 TL',
+    xp: 50
+  },
+  {
+    id: 'coppersmith',
+    emoji: '🔨',
+    cat: 'Bazaar',
+    title: 'Zincirli Bedesten (Coppersmith Bazaar)',
+    desc: 'A 16th-century covered bazaar where artisan coppersmiths still hammer away. Buy handmade bowls, coffee pots, and unique souvenirs.',
+    hours: 'Daily 9 AM – 7 PM',
+    price: 'Free entry',
+    xp: 40
+  },
+  {
+    id: 'toys',
+    emoji: '🎠',
+    cat: 'Museum',
+    title: 'Museum of Toys & Games',
+    desc: 'A charming collection of toys spanning centuries from around the world, housed in a historic stone building with a cave underneath.',
+    hours: '8:30 AM – 5:00 PM',
+    price: '~40 TL',
+    xp: 45
+  },
+  {
+    id: 'hasan',
+    emoji: '🕌',
+    cat: 'Religious',
+    title: 'Hasan Süzer Ethnography Museum',
+    desc: 'A beautifully restored Ottoman mansion turned museum showcasing traditional Antep household life and intricate copper artifacts.',
+    hours: '8:30 AM – 5:00 PM',
+    price: 'Nominal',
+    xp: 40
+  },
+  {
+    id: 'ravanda',
+    emoji: '🌃',
+    cat: 'Historical',
+    title: 'Ravanda Castle',
+    desc: 'A medieval crusader castle perched dramatically on a hilltop outside the city with panoramic views of the plains stretching to Syria.',
+    hours: 'Open site',
+    price: 'Free',
+    xp: 55
+  },
+  {
+    id: 'kent',
+    emoji: '🏛️',
+    cat: 'Museum',
+    title: 'Bayazhan Kent Museum',
+    desc: 'A stunning early Republican-era mansion turned city museum exploring Gaziantep\'s cultural evolution since 1923.',
+    hours: '8:30 AM – 5:30 PM',
+    price: 'Nominal',
+    xp: 35
+  }
+];
+
+const foods = [
+  { emoji: '🥐', name: 'Baklava', desc: 'The gold standard — Antep baklava with local pistachios is incomparable. Flakier, nuttier, less sweet than elsewhere.' },
+  { emoji: '🍲', name: 'Beyran Soup', desc: 'A bold lamb and rice soup eaten at breakfast. Rich, garlicky, spicy — the ultimate hangover cure of the south.' },
+  { emoji: '🫕', name: 'Yuvalama', desc: 'Tiny meatballs with chickpeas in a yogurt sauce. One of Antep\'s most sophisticated comfort foods.' },
+  { emoji: '🥙', name: 'Lahmacun', desc: 'Thin crispy flatbread with spiced minced meat. Add lemon, roll it up, eat it in the street.' },
+  { emoji: '🍢', name: 'Ali Nazik Kebab', desc: 'Smoked eggplant purée with yogurt and ground lamb on top. Smoky, creamy, extraordinary.' },
+  { emoji: '🫓', name: 'Katmer', desc: 'The breakfast of champions: layered pastry filled with clotted cream and ground pistachios. Heaven for ₺30.' },
+  { emoji: '🫙', name: 'Firik Pilaf', desc: 'Freekeh wheat pilaf cooked with lamb and spices. A grain dish with deep, roasted flavors.' },
+  { emoji: '🫒', name: 'İç Pilav', desc: 'Liver rice stuffed with currants, pine nuts and spices. A festive staple in every Antep home.' },
+  { emoji: '🍦', name: 'Dondurma', desc: 'Antep-style stretchy ice cream with mastic and salep. Watch it being performed before your eyes.' },
+  { emoji: '🫒', name: 'Antep Pistachios', desc: 'Simply the world\'s best. Buy a kilo from the bazaar. You\'ll finish it before you leave the city.' },
+  { emoji: '🥣', name: 'Oruk', desc: 'Bulgur shells stuffed with meat and walnuts then fried. Crispy, warming, street food perfection.' },
+  { emoji: '🍮', name: 'Şöbiyet', desc: 'A crispier baklava variant filled with clotted cream and pistachios. Even better than the original.' },
+];
+
+const restaurants = [
+  {
+    emoji: '🍖',
+    cat: 'Traditional',
+    title: 'Eşgili Restaurant',
+    desc: 'Authentic home-cooked Antep dishes with friendly English-speaking staff. Try the Yuvalama and Katmer.',
+    hours: '9:30 AM – 9:00 PM',
+    price: 'Mid-range',
+    xp: 30
+  },
+  {
+    emoji: '🥩',
+    cat: 'Kebab & Soup',
+    title: 'Sakıp Usta Paca Beyran',
+    desc: 'Famous for Beyran soup served even at 5 AM. A Gaziantep institution. Get there early — it runs out.',
+    hours: '5:30 AM – 2:00 AM',
+    price: 'Budget',
+    xp: 25
+  },
+  {
+    emoji: '🍡',
+    cat: 'Local Cuisine',
+    title: 'Yesemek Gaziantep Mutfağı',
+    desc: 'Great spot for regional dishes, half-portions available so you can try more. Excellent Alaca Çorba.',
+    hours: '9:30 AM – 9:00 PM',
+    price: 'Mid-range',
+    xp: 25
+  },
+  {
+    emoji: '🧁',
+    cat: 'Dessert',
+    title: 'Koçak Baklava',
+    desc: 'THE place for baklava in Antep. Try Şöbiyet, Havu  Dilimi, and Midye varieties. Free parking.',
+    hours: '7:00 AM – 11:00 PM',
+    price: 'Dessert prices',
+    xp: 35
+  }
+];
+
+const quests = [
+  { id: 'q1', name: 'Eat baklava for breakfast — before 9 AM', reward: '+75 XP • "Baklava Rebel" badge', diff: 'easy' },
+  { id: 'q2', name: 'Visit Zeugma Museum and find the Gypsy Girl mosaic', reward: '+80 XP • "Mosaic Pilgrim" title', diff: 'easy' },
+  { id: 'q3', name: 'Buy pistachios directly from a bazaar stall, bargain the price', reward: '+60 XP • "Bazaar Veteran" badge', diff: 'medium' },
+  { id: 'q4', name: 'Eat Beyran soup before 8 AM at Sakıp Usta', reward: '+90 XP • "Dawn Warrior" title', diff: 'hard' },
+  { id: 'q5', name: 'Try 5 different types of baklava in one day', reward: '+100 XP • "Baklava Connoisseur" badge', diff: 'medium' },
+  { id: 'q6', name: 'Climb up to the Gaziantep Castle walls for the view', reward: '+50 XP • "Castle Keeper" badge', diff: 'easy' },
+  { id: 'q7', name: 'Watch a coppersmith work and learn what they\'re making', reward: '+65 XP • "Craft Curious" title', diff: 'medium' },
+  { id: 'q8', name: 'Eat Katmer for breakfast at a lokanta', reward: '+55 XP • "Pistachio Dreamer"', diff: 'easy' },
+  { id: 'q9', name: 'Navigate the bazaar without using Google Maps', reward: '+120 XP • "True Navigator" title', diff: 'hard' },
+  { id: 'q10', name: 'Learn to say "Çok güzel!" (very beautiful) and use it sincerely', reward: '+30 XP • "Antep Heart" badge', diff: 'easy' },
+];
+
+const triviaQuestions = [
+  {
+    q: 'Gaziantep\'s Zeugma Mosaic Museum houses one of the world\'s most famous mosaics. What is her nickname?',
+    opts: ['The Empress', 'The Gypsy Girl', 'The Dancing Lady', 'The Roman Bride'],
+    correct: 1,
+    fact: 'The "Gypsy Girl" (Çingene Kızı) is a 2nd-century AD Roman mosaic and one of the best-preserved in the world.'
+  },
+  {
+    q: 'Gaziantep is often called the pistachio capital of Turkey. What percentage of Turkey\'s pistachios come from the Gaziantep region?',
+    opts: ['About 20%', 'About 50%', 'About 80%', 'Almost 100%'],
+    correct: 2,
+    fact: 'The Gaziantep region produces roughly 80% of Turkey\'s pistachios — the city\'s identity is inseparable from this nut.'
+  },
+  {
+    q: 'Which international organization recognized Gaziantep as a Creative City of Gastronomy?',
+    opts: ['World Food Organization', 'UNESCO', 'Michelin Guide', 'UNICEF'],
+    correct: 1,
+    fact: 'UNESCO designated Gaziantep a Creative City of Gastronomy in 2015 — the first city in Turkey to receive this honor.'
+  },
+  {
+    q: 'The original name "Antep" was officially changed to "Gaziantep" after which event?',
+    opts: ['The founding of the Republic', 'The city\'s heroic resistance in the Turkish War of Independence', 'The discovery of the Zeugma mosaics', 'A royal decree by Mustafa Kemal'],
+    correct: 1,
+    fact: 'The "Gazi" prefix (meaning "veteran warrior") was awarded in 1921 honoring the city\'s 10-month resistance against French occupation forces.'
+  },
+  {
+    q: 'Beyran soup — one of Gaziantep\'s most iconic dishes — is traditionally eaten at what time of day?',
+    opts: ['Lunch', 'Midnight', 'Breakfast, very early in the morning', 'After Friday prayer'],
+    correct: 2,
+    fact: 'Beyran is a breakfast dish, historically eaten before dawn by laborers. Some shops open at 5 AM and sell out within hours.'
+  },
+  {
+    q: 'The ancient city of Zeugma, whose mosaics are now in the museum, was founded near which river?',
+    opts: ['Tigris', 'Euphrates (Fırat)', 'Kızılırmak', 'Seyhan'],
+    correct: 1,
+    fact: 'Zeugma was founded on the western bank of the Euphrates (Fırat) by one of Alexander the Great\'s generals around 300 BC.'
+  },
+  {
+    q: 'What is "Katmer" — one of Gaziantep\'s most celebrated breakfast foods?',
+    opts: ['A spicy lamb soup', 'A layered pastry filled with clotted cream and pistachios', 'A grilled eggplant dish', 'A fermented yogurt drink'],
+    correct: 1,
+    fact: 'Katmer is a thin, crispy layered pastry (like a savory croissant) filled with clotted cream (kaymak) and ground pistachios — eaten warm for breakfast.'
+  },
+];
+
+// ===== STATE =====
+let xp = 0;
+let level = 1;
+let checkedLandmarks = new Set();
+let checkedQuests = new Set();
+let triviaIndex = 0;
+let triviaScore = 0;
+let triviaAnswered = false;
+
+const rankTitles = ['Newcomer', 'Curious Traveler', 'Bazaar Explorer', 'City Wanderer', 'Antep Devotee', 'Master of Antep', 'Legend of Gaziantep'];
+const xpThresholds = [0, 100, 250, 500, 900, 1400, 2000];
+
+function getLevel(xp) {
+  let lv = 1;
+  for (let i = 1; i < xpThresholds.length; i++) {
+    if (xp >= xpThresholds[i]) lv = i + 1;
+    else break;
+  }
+  return Math.min(lv, rankTitles.length);
+}
+
+function addXP(amount, achievementName) {
+  xp += amount;
+  updateUI();
+  showAchievement(achievementName, amount);
+}
+
+function updateUI() {
+  const lv = getLevel(xp);
+  level = lv;
+  const thisLvXP = xpThresholds[lv - 1];
+  const nextLvXP = xpThresholds[lv] || (xp + 1);
+  const pct = Math.min(100, ((xp - thisLvXP) / (nextLvXP - thisLvXP)) * 100);
+
+  document.getElementById('xpBarFill').style.width = pct + '%';
+  document.getElementById('xpAmount').textContent = xp;
+  document.getElementById('xpNeeded').textContent = nextLvXP === (xp + 1) ? '∞' : nextLvXP;
+  document.getElementById('levelBadge').textContent = lv;
+  document.getElementById('rankTitle').textContent = '"' + (rankTitles[lv - 1] || 'Legend') + '"';
+
+  // landmark progress
+  const checked = checkedLandmarks.size;
+  const total = landmarks.length;
+  const pctL = (checked / total) * 100;
+  document.getElementById('landmarkProgress').style.width = pctL + '%';
+  document.getElementById('landmarkText').textContent = `${checked} of ${total} landmarks visited`;
+  document.getElementById('visitCount').textContent = checked;
+  document.getElementById('visitTotal').textContent = total;
+}
+
+function showAchievement(name, xpAmt) {
+  const popup = document.getElementById('achievementPopup');
+  document.getElementById('achievementName').textContent = name;
+  document.getElementById('achievementXP').textContent = '+' + xpAmt + ' XP';
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 3500);
+}
+
+// ===== BUILD LANDMARKS =====
+function buildLandmarks() {
+  const grid = document.getElementById('landmarksGrid');
+  landmarks.forEach(lm => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = 'card-' + lm.id;
+    div.innerHTML = `
+      <div class="card-photo-area empty" id="photoArea-${lm.id}">
+        <img class="card-photo-img" id="photoImg-${lm.id}" src="" alt="" onclick="openLightbox('${lm.id}')">
+        <div class="card-photo-overlay">
+          <button class="photo-overlay-btn" onclick="triggerPhotoUpload('${lm.id}','${lm.title}','${lm.emoji}')">🔄 Change</button>
+          <button class="photo-overlay-btn danger" onclick="removePhoto('${lm.id}')">🗑 Remove</button>
+        </div>
+        <div class="card-photo-count" id="photoCount-${lm.id}">📷 1</div>
+      </div>
+      <button class="card-photo-upload-btn" id="uploadBtn-${lm.id}" onclick="triggerPhotoUpload('${lm.id}','${lm.title}','${lm.emoji}')">
+        📷 Add Your Photo
+      </button>
+      <span class="card-emoji">${lm.emoji}</span>
+      <div class="card-check" id="check-${lm.id}" onclick="toggleLandmark('${lm.id}', ${lm.xp}, '${lm.title}')"></div>
+      <div class="card-body">
+        <div class="card-category">${lm.cat}</div>
+        <div class="card-title">${lm.title}</div>
+        <div class="card-desc">${lm.desc}</div>
+        <div class="card-meta">
+          <span class="meta-tag">⏰ ${lm.hours}</span>
+          <span class="meta-tag">💰 ${lm.price}</span>
+          <span class="xp-tag">+${lm.xp} XP</span>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+
+function toggleLandmark(id, xpAmt, name) {
+  const el = document.getElementById('check-' + id);
+  if (checkedLandmarks.has(id)) {
+    checkedLandmarks.delete(id);
+    el.classList.remove('checked');
+    el.textContent = '';
+    xp = Math.max(0, xp - xpAmt);
+    updateUI();
+  } else {
+    checkedLandmarks.add(id);
+    el.classList.add('checked');
+    el.textContent = '✓';
+    addXP(xpAmt, 'Visited: ' + name);
+  }
+}
+
+// ===== BUILD FOOD =====
+function buildFood() {
+  const grid = document.getElementById('foodGrid');
+  foods.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'food-card';
+    div.innerHTML = `
+      <span class="food-emoji">${f.emoji}</span>
+      <div class="food-name">${f.name}</div>
+      <div class="food-desc">${f.desc}</div>`;
+    grid.appendChild(div);
+  });
+
+  const rgrid = document.getElementById('restaurantsGrid');
+  restaurants.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <span class="card-emoji">${r.emoji}</span>
+      <div class="card-body">
+        <div class="card-category">${r.cat}</div>
+        <div class="card-title">${r.title}</div>
+        <div class="card-desc">${r.desc}</div>
+        <div class="card-meta">
+          <span class="meta-tag">⏰ ${r.hours}</span>
+          <span class="meta-tag">💰 ${r.price}</span>
+          <span class="xp-tag">+${r.xp} XP</span>
+        </div>
+      </div>`;
+    rgrid.appendChild(div);
+  });
+}
+
+// ===== BUILD QUESTS =====
+function buildQuests() {
+  const list = document.getElementById('questList');
+  quests.forEach(q => {
+    const li = document.createElement('li');
+    li.className = 'quest-item';
+    li.innerHTML = `
+      <div class="quest-checkbox" id="qcheck-${q.id}" onclick="toggleQuest('${q.id}')"></div>
+      <div class="quest-text">
+        <div class="quest-name">${q.name}</div>
+        <div class="quest-reward">${q.reward}</div>
+      </div>
+      <span class="quest-difficulty diff-${q.diff}">${q.diff}</span>`;
+    list.appendChild(li);
+  });
+}
+
+function toggleQuest(id) {
+  const el = document.getElementById('qcheck-' + id);
+  const q = quests.find(q => q.id === id);
+  const xpMatch = q.reward.match(/\+(\d+) XP/);
+  const xpAmt = xpMatch ? parseInt(xpMatch[1]) : 50;
+  
+  if (checkedQuests.has(id)) {
+    checkedQuests.delete(id);
+    el.classList.remove('done');
+    xp = Math.max(0, xp - xpAmt);
+    updateUI();
+  } else {
+    checkedQuests.add(id);
+    el.classList.add('done');
+    const badgeMatch = q.reward.match(/"([^"]+)"/);
+    const badge = badgeMatch ? badgeMatch[1] : 'Quest Complete!';
+    addXP(xpAmt, badge);
+  }
+}
+
+// ===== TRIVIA =====
+function loadQuestion() {
+  if (triviaIndex >= triviaQuestions.length) {
+    document.getElementById('triviaQuestion').textContent = `🎉 Quiz complete! You scored ${triviaScore} / ${triviaQuestions.length}. Refresh to play again!`;
+    document.getElementById('triviaOptions').innerHTML = '';
+    document.getElementById('triviaFeedback').textContent = triviaScore >= 5 ? 'Impressive! You truly know Gaziantep.' : 'Keep exploring and learning!';
+    document.getElementById('triviaNext').style.display = 'none';
+    return;
+  }
+
+  triviaAnswered = false;
+  const tq = triviaQuestions[triviaIndex];
+  document.getElementById('triviaQuestion').textContent = tq.q;
+  document.getElementById('triviaFeedback').textContent = '';
+  document.getElementById('triviaNext').style.display = 'none';
+  document.getElementById('triviaTotal').textContent = triviaQuestions.length;
+
+  const opts = document.getElementById('triviaOptions');
+  opts.innerHTML = '';
+  tq.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'trivia-option';
+    btn.textContent = opt;
+    btn.onclick = () => answerTrivia(i, btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerTrivia(idx, btn) {
+  if (triviaAnswered) return;
+  triviaAnswered = true;
+  const tq = triviaQuestions[triviaIndex];
+  const allBtns = document.querySelectorAll('.trivia-option');
+
+  allBtns[tq.correct].classList.add('correct');
+
+  if (idx === tq.correct) {
+    triviaScore++;
+    document.getElementById('triviaScore').textContent = triviaScore;
+    document.getElementById('triviaFeedback').textContent = '✅ Correct! ' + tq.fact;
+    addXP(50, 'Trivia Master!');
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('triviaFeedback').textContent = '❌ ' + tq.fact;
+  }
+
+  document.getElementById('triviaNext').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  triviaIndex++;
+  loadQuestion();
+}
+
+// ===== PRACTICAL INFO =====
+const infoData = [
+  {
+    icon: '✈️',
+    title: 'Getting There',
+    items: [
+      '<strong>By Air:</strong> Oğuzeli Airport (GZT) — 20 km from city center. Turkish Airlines, Pegasus, SunExpress fly daily from Istanbul (1h45m), Ankara, Izmir.',
+      '<strong>By Bus:</strong> Excellent intercity buses from Istanbul (14h), Ankara (10h), Adana (3h), via major companies like Metro, Kamil Koç.',
+      '<strong>By Car:</strong> Well-connected via O-52 motorway. ~1,250 km from Istanbul.'
+    ]
+  },
+  {
+    icon: '🚌',
+    title: 'Getting Around',
+    items: [
+      '<strong>Tram (Metrolite):</strong> Runs through the main arteries — cheap and punctual.',
+      '<strong>City Buses:</strong> Extensive network, requires HES card (get at bus terminals).',
+      '<strong>Taxi / BiTaksi:</strong> Widely available, use app to avoid overcharging.',
+      '<strong>Walking:</strong> Old city center is very walkable — most sights are within 2 km.'
+    ]
+  },
+  {
+    icon: '💰',
+    title: 'Money & Costs',
+    items: [
+      '<strong>Currency:</strong> Turkish Lira (TRY). Exchange at city center banks.',
+      '<strong>Budget tip:</strong> You can eat an extraordinary full lunch for ₺150–200.',
+      '<strong>Baklava:</strong> ₺300–500/kg at the source. Cheaper than anywhere else in Turkey.',
+      '<strong>Museums:</strong> Most cost ₺50–150. Museum Pass Turkey covers major ones.'
+    ]
+  },
+  {
+    icon: '📅',
+    title: 'Best Time to Visit',
+    items: [
+      '<strong>Spring (Apr–May):</strong> ⭐ Perfect weather, pistachio blossom season.',
+      '<strong>Autumn (Sep–Oct):</strong> ⭐ Harvest season, fresh pistachios everywhere.',
+      '<strong>Summer (Jun–Aug):</strong> Very hot (40°C+) but food festivals are active.',
+      '<strong>Winter (Dec–Feb):</strong> Cool and quiet, fewer tourists, great for bazaars.'
+    ]
+  },
+  {
+    icon: '📱',
+    title: 'Digital & Connectivity',
+    items: [
+      '<strong>SIM:</strong> Buy a local Turkcell / Vodafone SIM at the airport for data.',
+      '<strong>Wi-Fi:</strong> Available in most cafés and restaurants.',
+      '<strong>Maps:</strong> Download Google Maps offline for Gaziantep before arrival.',
+      '<strong>Language:</strong> Limited English in old city; Google Translate (camera mode) is your friend.'
+    ]
+  },
+  {
+    icon: '🛡️',
+    title: 'Safety & Tips',
+    items: [
+      '<strong>Safety:</strong> Gaziantep is generally very safe for tourists.',
+      '<strong>Respect:</strong> Cover shoulders and knees when visiting mosques.',
+      '<strong>Bargain:</strong> Polite haggling is expected in the bazaar, not in baklavas shops.',
+      '<strong>Water:</strong> Drink bottled water. Tap water is safe for brushing teeth.',
+      '<strong>Hospitality:</strong> Locals may offer you tea. Always accept — it\'s an honor.'
+    ]
+  },
+  {
+    icon: '🏨',
+    title: 'Accommodation',
+    items: [
+      '<strong>Old City (Şehitkamil):</strong> Boutique hotels in restored Ottoman mansions — atmospheric.',
+      '<strong>Budget:</strong> Hostels and guesthouses near the castle from ₺400/night.',
+      '<strong>Mid-range:</strong> Dedeman, Hilton, and Ramada available for ₺1,500–3,000/night.',
+      '<strong>Tip:</strong> Stay in the old city to be within walking distance of most sights.'
+    ]
+  },
+  {
+    icon: '🗣️',
+    title: 'Useful Turkish Phrases',
+    items: [
+      '<strong>Merhaba</strong> — Hello',
+      '<strong>Teşekkür ederim</strong> — Thank you',
+      '<strong>Ne kadar?</strong> — How much?',
+      '<strong>Çok güzel!</strong> — Very beautiful!',
+      '<strong>Hesap lütfen</strong> — The bill, please',
+      '<strong>Antepli misiniz?</strong> — Are you from Antep? (they love this)'
+    ]
+  }
+];
+
+function buildInfo() {
+  const grid = document.getElementById('infoGrid');
+  infoData.forEach(info => {
+    const div = document.createElement('div');
+    div.className = 'info-card';
+    div.innerHTML = `
+      <span class="info-icon">${info.icon}</span>
+      <div class="info-title">${info.title}</div>
+      <ul class="info-list">${info.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    grid.appendChild(div);
+  });
+}
+
+// ===== LEADERBOARD =====
+const leaderboardData = [
+  { name: 'Ahmet K.', xp: 1450, rank: '👑' },
+  { name: 'Sara M.', xp: 1220, rank: '🥈' },
+  { name: 'You', xp: 0, rank: '🥉', isYou: true },
+  { name: 'Diego R.', xp: 890, rank: '4' },
+  { name: 'Yuki T.', xp: 650, rank: '5' },
+];
+
+function buildLeaderboard() {
+  const container = document.getElementById('leaderboardRows');
+  
+  function renderLB() {
+    leaderboardData.find(r => r.isYou).xp = xp;
+    leaderboardData.sort((a, b) => b.xp - a.xp);
+    
+    container.innerHTML = leaderboardData.map((row, i) => `
+      <div class="lb-row ${row.isYou ? 'style="background:rgba(201,150,26,0.06);border-radius:8px;padding:0.7rem 0.5rem;"' : ''}">
+        <div class="lb-rank">${i < 3 ? ['👑','🥈','🥉'][i] : (i+1)}</div>
+        <div class="lb-name" style="${row.isYou ? 'color:var(--gold-light);font-weight:700' : ''}">${row.name} ${row.isYou ? '← You' : ''}</div>
+        <div class="lb-xp">${row.xp} XP</div>
+      </div>`).join('');
+  }
+  
+  renderLB();
+  setInterval(() => {
+    leaderboardData.find(r => r.isYou).xp = xp;
+    renderLB();
+  }, 2000);
+}
+
+// ===== STARS BG =====
+function createStars() {
+  const c = document.getElementById('starsContainer');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random() * 100}%;
+      left:${Math.random() * 100}%;
+      animation-delay:${Math.random() * 4}s;
+      animation-duration:${2 + Math.random() * 3}s;`;
+    c.appendChild(star);
+  }
+}
+
+// ===== KTB DATA: ANTİK KENTLER =====
+const antikKentler = [
+  {
+    id:'zeugma-antik', emoji:'🏛️', cat:'Antik Kent', xp:90,
+    title:'Belkıs/Zeugma Antik Kenti',
+    desc:'Fırat kıyısında, Birecik Barajı gölü kenarında 7 tepe üzerine kurulu antik kent. M.Ö. 300\'de İskender\'in komutanı Seleukos tarafından kurulmuştur. Yaklaşık 21 dekarlık alanda Roma dönemi mozaikleri, villalar ve kamu yapıları bulunmaktadır.',
+    hours:'Yavuzeli-Nizip yolu üzeri', price:'Serbest alan'
+  },
+  {
+    id:'yesemek', emoji:'🗿', cat:'Açık Hava Müzesi', xp:85,
+    title:'Yesemek Açık Hava Müzesi',
+    desc:'Dünyanın en büyük heykel ve taş ocağı atölyesi. M.Ö. 1400-700 yıllarına ait Hitit döneminden kalma sfenksler, aslan heykelleri ve tanrı figürleri yerinde sergilenmektedir.',
+    hours:'08:30 – 17:00', price:'Müze Kartı geçerli'
+  },
+  {
+    id:'rumkale', emoji:'🏰', cat:'Antik Kale', xp:80,
+    title:'Rumkale',
+    desc:'Fırat ve Merzimen çaylarının birleştiği yerde dik kayalıklar üzerinde kurulu büyüleyici antik kale. Halfeti\'den tekneyle ulaşılabilir. Şitamrat, Altın Kale gibi pek çok isimle anılmıştır. 1838\'de kaleyi ziyaret eden Moltke "kayalığın nerede bittiğini söylemek çok zor" demiştir.',
+    hours:'Teknelerle erişim', price:'Tekne ücreti'
+  },
+  {
+    id:'duluk', emoji:'⛰️', cat:'Arkeolojik Alan', xp:65,
+    title:'Dülük Antik Kenti & Dülükbaba Dağı',
+    desc:'M.Ö. 3000\'e uzanan geçmişiyle bölgenin en eski yerleşim merkezlerinden biri. Roma, Selçuklu ve Osmanlı izleri barındıran kutsal dağ. Dülük Baba yatırı ve ormanıyla doğa yürüyüşü imkanı da sunar.',
+    hours:'Serbest', price:'Ücretsiz'
+  },
+  {
+    id:'karkamis', emoji:'🏺', cat:'Antik Kent', xp:75,
+    title:'Karkamış Antik Kenti',
+    desc:'Fırat kıyısında, Türkiye-Suriye sınırında yer alan ve arkeolojik önemi itibarıyla büyük değer taşıyan Hitit başkenti. Önemli Hitit-Arami dönemi eserleri keşfedilmiştir.',
+    hours:'Özel izin gerekli', price:'Araştırmacı erişimi'
+  },
+  {
+    id:'ravanda-castle', emoji:'🗼', cat:'Ortaçağ Kalesi', xp:70,
+    title:'Ravanda Kalesi',
+    desc:'Şehir dışında dramatik bir tepe üzerinde konumlanan Ortaçağ kalesi. Çevresindeki ovalara panoramik manzarası ile ziyaretçileri büyüler. Haçlı ve Selçuklu dönemi izleri taşır.',
+    hours:'Açık alan', price:'Ücretsiz'
+  }
+];
+
+// ===== KTB DATA: MÜZELER =====
+const muzeler = [
+  {
+    id:'zeugma-muz', emoji:'🖼️', cat:'Dünya Mirası', xp:80,
+    title:'Zeugma Mozaik Müzesi',
+    desc:'Dünyanın en büyük mozaik müzesi. 2011\'de açılan müze 1.700 m² sergi alanında 2.000 yıllık Roma mozaiklerini barındırmaktadır. Başyapıt "Çingene Kızı" mozaiği burada sergilenmektedir.',
+    hours:'08:30 – 16:30 (Pazartesi kapalı)', price:'~₺200 / Müze Kartı'
+  },
+  {
+    id:'arkeoloji', emoji:'🏺', cat:'Arkeoloji', xp:60,
+    title:'Gaziantep Arkeoloji Müzesi',
+    desc:'1944\'te kurulan, Alt Paleolitik dönemden günümüze kesintisiz insan yerleşiminin belgeleyen köklü müze. İstasyon Caddesi üzerinde. 2011 sonrası çağdaş müzecilik anlayışıyla yeniden tasarlandı.',
+    hours:'08:30 – 17:00 (Pazartesi kapalı)', price:'~₺100'
+  },
+  {
+    id:'hamam-muz', emoji:'🛁', cat:'Osmanlı Mirası', xp:55,
+    title:'Gaziantep Hamam Müzesi',
+    desc:'Gaziantep Kalesi\'nin yanı başındaki bu yapı, yüzyıllar boyunca Lala Mustafa Paşa Külliyesi\'nin hamam bölümü olarak hizmet vermiştir. Osmanlı hamam mimarisinin en güzel örneklerinden.',
+    hours:'08:30 – 17:00', price:'Nominal'
+  },
+  {
+    id:'hasan-suzer', emoji:'🏛️', cat:'Etnografya', xp:50,
+    title:'Hasan Süzer Etnografya Müzesi',
+    desc:'Restore edilmiş geleneksel Antep konağı. Osmanlı dönemi gündelik yaşamını, bakır işçiliğini ve geleneksel kıyafetleri sergiler. İki katlı avlulu yapısıyla tipik "Antep Evi" mimarisini yansıtır.',
+    hours:'08:30 – 17:00 (Pazartesi kapalı)', price:'~₺80'
+  },
+  {
+    id:'oyuncak', emoji:'🎠', cat:'Oyuncak', xp:45,
+    title:'Gaziantep Oyun ve Oyuncak Müzesi',
+    desc:'Bey Mahallesi\'ndeki tarihi taş binada, yüzyıllara ait dünyanın dört bir yanından getirilen oyuncak koleksiyonu. Altında tarihi bir mağara bulunuyor. Çocuklar ve nostaljiseverler için ideal.',
+    hours:'08:30 – 17:00', price:'~₺40'
+  },
+  {
+    id:'mutfak-muz', emoji:'🍳', cat:'Gastronomi', xp:50,
+    title:'Emine Göğüş Mutfak Müzesi',
+    desc:'UNESCO tarafından tanınan Gaziantep mutfak mirasını belgeleyen müze. Geleneksel mutfak araç-gereci, tarihî tarifler ve yaşayan pişirme gösterileriyle ziyaretçilere sunulmaktadır.',
+    hours:'08:30 – 17:30', price:'~₺5'
+  },
+  {
+    id:'kent-muz', emoji:'🏙️', cat:'Kent Tarihi', xp:40,
+    title:'Bayazhan Gaziantep Kent Müzesi',
+    desc:'1923 sonrası Gaziantep\'in kültürel ve ekonomik gelişimini anlatan erken Cumhuriyet dönemi konağı. Yerel sanatlar, el sanatları ve şehir tarihini kapsamlı biçimde ele alır.',
+    hours:'08:30 – 17:30', price:'Nominal'
+  },
+  {
+    id:'savunma', emoji:'⚔️', cat:'Savaş Tarihi', xp:60,
+    title:'Gaziantep Savunma ve Savaş Müzesi (Kale)',
+    desc:'Gaziantep Kalesi içinde kurulan müze, şehrin Kurtuluş Savaşı\'ndaki 10 aylık direnişini canlandırmaktadır. Fransız kuvvetlerine karşı yürütülen mücadeleyi dioramalar ve tarihi eserlerle anlatır.',
+    hours:'08:30 – 17:30', price:'~₺80'
+  }
+];
+
+// ===== KTB DATA: CAMİLER =====
+const camiler = [
+  {
+    id:'kurşunlu', emoji:'🕌', cat:'16. yy Osmanlı', xp:40,
+    title:'Kurşunlu Camii',
+    desc:'Mimar Sinan\'ın öğrencisi tarafından inşa edildiği rivayet edilen, kurşun kaplı kubbesiyle şehrin simge yapılarından. Tarihi çarşının kalbinde yer alır.',
+    hours:'Namaz vakitleri', price:'Ücretsiz'
+  },
+  {
+    id:'alaaddin', emoji:'🕌', cat:'Selçuklu', xp:45,
+    title:'Alaaddin Camii',
+    desc:'12. yüzyıldan kalma Selçuklu dönemi eseri. Gaziantep\'in en eski camilerinden. Kesme taş işçiliği ve sade mimarisiyle dikkat çeker.',
+    hours:'Namaz vakitleri', price:'Ücretsiz'
+  },
+  {
+    id:'boyacioglu', emoji:'🕌', cat:'Osmanlı', xp:35,
+    title:'Boyacıoğlu Camii',
+    desc:'Osmanlı döneminden kalma, tarihi Boyacı çarşısına yakın konumlanmış geleneksel cami. Ahşap tavan süslemeleriyle ünlü.',
+    hours:'Namaz vakitleri', price:'Ücretsiz'
+  },
+  {
+    id:'tahtani', emoji:'🕌', cat:'Osmanlı', xp:35,
+    title:'Tahtani Camii',
+    desc:'Şehrin merkezindeki tarihi Osmanlı camii. İç avlu ve şadırvanıyla geleneksel Osmanlı cami mimarisinin güzel bir örneği.',
+    hours:'Namaz vakitleri', price:'Ücretsiz'
+  }
+];
+
+// ===== HANLAR & HAMAMLAR =====
+const hanlar = [
+  {
+    id:'zincirli', emoji:'⚒️', cat:'16. yy Bedesten', xp:50,
+    title:'Zincirli Bedesten (Bakırcılar Çarşısı)',
+    desc:'16. yüzyıldan kalma kapalı çarşı. Bakırcı ustalar hâlâ burada çalışmaktadır. El yapımı bakır kazan, ibrik, tepsi ve benzersiz hediyelik eşyalar satın alınabilir. Çarşı içinde çayınızı yudumlayarak zanaatkarları izleyebilirsiniz.',
+    hours:'Günlük 09:00 – 19:00', price:'Giriş ücretsiz'
+  },
+  {
+    id:'husrev', emoji:'🏛️', cat:'Osmanlı Hanı', xp:45,
+    title:'Hüsrev Paşa Hanı',
+    desc:'16. yüzyılda inşa edilen ticaret hanı. Osmanlı han mimarisinin Gaziantep\'teki en önemli örneklerinden. İki katlı yapısı ve geniş avlusuyla dönemin ticaret hayatını gözler önüne serer.',
+    hours:'Gün boyu açık', price:'Ücretsiz'
+  },
+  {
+    id:'cemalbey', emoji:'🛁', cat:'Tarihi Hamam', xp:40,
+    title:'Cemalbey Hamamı',
+    desc:'Osmanlı döneminden kalma ve günümüzde de faal olarak kullanılan tarihi hamam. Geleneksel kese-köpük deneyimi için ideal mekan.',
+    hours:'Erkek/kadın saatleri değişir', price:'~₺200-400'
+  },
+  {
+    id:'seyh-fetullah', emoji:'🛁', cat:'Tarihi Hamam', xp:35,
+    title:'Şeyh Fethullah Hamamı',
+    desc:'Şehirde günümüze ulaşan en eski tarihi hamamlardan. Geleneksel çifte hamam düzeninde inşa edilmiş. Tarihi taş mimarisi ziyaret değer taşır.',
+    hours:'Özel saatler', price:'Nominal'
+  }
+];
+
+// ===== KİLİSELER & DİNİ YAPILAR =====
+const kiliseler = [
+  {
+    id:'katolik', emoji:'⛪', cat:'1860 Kilisesi', xp:40,
+    title:'Katolik Ermeni Kilisesi',
+    desc:'1860 yılında yapılan kilisenin inşasında Fransa Kralı III. Napolyon\'dan maddi destek alınmıştır. Kent merkezinde Atatürk Bulvarı üzerinde. Günümüzde Otelcilik ve Turizm Lisesi ile öğretmenevi olarak kullanılmaktadır.',
+    hours:'Dış görünüm', price:'Ücretsiz'
+  },
+  {
+    id:'havra', emoji:'✡️', cat:'Osmanlı Sinagogu', xp:45,
+    title:'Yahudi Sinagogu (Havra)',
+    desc:'1886 yılında Yahudi mahallesi olarak bilinen Düğmeci Mahallesi\'nde inşa edilmiştir. Üç nefli, galerili yapısıyla özgün mimari özelliklere sahip. Restore edilerek yeniden ayağa kaldırılmıştır.',
+    hours:'Resmi saatler', price:'Nominal'
+  },
+  {
+    id:'inanc', emoji:'🕊️', cat:'İnanç Turizmi', xp:35,
+    title:'Gaziantep İnanç Turizmi Rotası',
+    desc:'Gaziantep\'in çok kültürlü geçmişini yansıtan camiler, kiliseler ve sinagogun oluşturduğu inanç turizmi güzergahı. Müslüman, Hristiyan ve Yahudi mirasını aynı şehirde keşfedin.',
+    hours:'Çeşitli saatler', price:'Ücretsiz'
+  },
+  {
+    id:'turbeler', emoji:'🌿', cat:'İslam Mirası', xp:35,
+    title:'Gaziantep Evliyaları & Türbeler',
+    desc:'Gaziantep ve yöresinin Türkleşme sürecinde önemli rol oynayan din büyüklerinin türbeleri. Şeyh Adil, Dülük Baba ve diğer yatırlar halk tarafından ziyaret edilmektedir.',
+    hours:'Gün boyu açık', price:'Ücretsiz'
+  }
+];
+
+// ===== TARİHİ EVLER & MESİRE =====
+const evlerMesire = [
+  {
+    id:'antep-evleri', emoji:'🏡', cat:'Geleneksel Mimari', xp:40,
+    title:'Tarihi Antep Evleri',
+    desc:'"Hayat" (avlu) etrafında şekillenen, yüksek duvarlar arkasında içe dönük yaşamı yansıtan geleneksel taş evler. İkinci kat sokağa taşan "köşk" çıkmaları ile karakteristik siluet oluşturur. "Gane" adı verilen havuzlu avlular ve işlemeli taşlarla bezeli zeminler.',
+    hours:'Şehitkamil semti', price:'Dış görünüm ücretsiz'
+  },
+  {
+    id:'dulukbaba-orman', emoji:'🌲', cat:'Mesire Alanı', xp:30,
+    title:'Dülükbaba Ormanları',
+    desc:'Şehir merkezine yakın mesire alanı. Piknik tesisleri, yürüyüş yolları ve doğal orman ortamı. Özellikle hafta sonları ailelerin ve gezginlerin uğrak noktası.',
+    hours:'Gün boyu açık', price:'Ücretsiz'
+  },
+  {
+    id:'halfeti', emoji:'🚤', cat:'Doğa & Tarih', xp:65,
+    title:'Halfeti Tekne Turu & Batık Köy',
+    desc:'Birecik Barajı\'nın suları altında kalan eski Halfeti köyü. Teknelerle gezerek yarı batık minareleri görebilirsiniz. Bölgede yetişen nadide siyah güller dünyaca ünlüdür.',
+    hours:'Tekne turları: sabah–akşam', price:'~₺150-250 kişi başı'
+  },
+  {
+    id:'burc-gol', emoji:'🌊', cat:'Doğa', xp:30,
+    title:'Burç Göleti & Ormanları',
+    desc:'Şehir merkezine 8 km mesafedeki Şehitkamil\'de piknik ve dinlenme alanı. Gölet etrafında kavaklık ve orman alanları bulunur. Kış aylarında kuş gözlemi yapılabilir.',
+    hours:'Gün boyu açık', price:'Ücretsiz'
+  }
+];
+
+// ===== EL SANATLARI =====
+const elsanatlar = [
+  { emoji:'🔨', name:'Bakırcılık', desc:'Bakırcılar Çarşısı\'nda ustalar el çekiciyle bakır kaplar, ibrikler ve tepsiler yapmaya devam ediyor. En geleneksel zanaat.' },
+  { emoji:'🧵', name:'Kutnu Dokumacılığı', desc:'İpek ve pamuktan dokunan, çizgili renkli desenli geleneksel kumaş. Antep\'in özgün tekstil mirası.' },
+  { emoji:'🧶', name:'Antep İşi Nakış', desc:'İğne oyası ve kasnak işi olarak bilinen el nakışları. Gelinliklerde, sofra örtülerinde ve dekoratif parçalarda kullanılır.' },
+  { emoji:'🪑', name:'Sedef Kakmacılığı', desc:'Ahşap yüzeylere sedef, bağa ve fildişi kakılarak yapılan eşsiz mobilya ve ev eşyaları. Yüzyıllık gelenek.' },
+  { emoji:'👟', name:'Yemenicilik', desc:'Rengarenk, el boyamalı geleneksel Antep yemeni(ayakkabı) yapımı. UNESCO Somut Olmayan Kültürel Miras listesinde.' },
+  { emoji:'🧣', name:'Aba Dokumacılığı', desc:'Yünden dokunan kalın geleneksel kumaş. Köylülerin soğuktan korunmak için kullandığı tarihi giysi.' },
+  { emoji:'🔮', name:'Telkari (Gümüş)', desc:'Gümüş teli kıvırıp bükerek yapılan ince işlemeli takı ve dekoratif objeler. Çarşıda ustalar talep üzerine özel parça üretiyor.' },
+  { emoji:'🏺', name:'Çömlekçilik', desc:'Kil ve topraktan el ile şekillendirilen geleneksel seramik. Araban ilçesi başta olmak üzere bölgede yaşatılmaya devam ediyor.' }
+];
+
+// ===== NE ALINIR =====
+const nealinir = [
+  { emoji:'🫒', name:'Antep Fıstığı', desc:'Dünyanın en iyi fıstığı doğrudan üreticiden alınır. Çiğ, kavurma, bütün veya iç fıstık. Bir kilo alıp bitirmeden şehri terk etmezsiniz.' },
+  { emoji:'🥐', name:'Baklava (Yaş veya Kuru)', desc:'Yaş baklava en taze haliyle yenir, kuru baklava ise eve götürmek için idealdir. Koçak, İmam Çağdaş, Katmer Pınarı tercih edilebilir.' },
+  { emoji:'🍪', name:'Antep Fıstıklı Kurabiye', desc:'Geleneksel tereyağlı kurabiyeler fıstıkla birleştiğinde eşsiz hediye seçenekleri oluşur. Uzun raf ömrü.' },
+  { emoji:'🌶️', name:'Pul Biber & Baharat', desc:'Antep usulü pul biber, isot (kurutulmuş biber) ve karışık baharat. Çarşı içindeki aktarlardan taze alınabilir.' },
+  { emoji:'🛖', name:'Bakır El Sanatları', desc:'Zincirli Bedesten\'den el yapımı bakır ibrik, tepsi veya kavanoz. Her biri benzersiz bir eserdir.' },
+  { emoji:'🧵', name:'Kutnu Kumaş & Ürünler', desc:'Geleneksel Antep dokuması çanta, kıyafet veya kumaş parçası. Hem dekoratif hem kullanışlı.' }
+];
+
+// ===== TARİH ŞERİDİ =====
+const tarihSerit = [
+  { date:'M.Ö. 6000+', title:'Kalkolitik Çağ', desc:'İlk insan yerleşimlerinin izleri. Bugünkü kale höyüğünde en eski katmanlar bu döneme aittir.' },
+  { date:'M.Ö. 1600-700', title:'Hitit Hakimiyeti', desc:'Bölge Hitit imparatorluğu sınırları içinde. Yesemek Açık Hava Müzesi\'ndeki heykel atölyesi bu dönemin mirasıdır.' },
+  { date:'M.Ö. 300', title:'Zeugma Kuruldu', desc:'İskender\'in komutanı Seleukos tarafından Fırat kıyısında kuruldu. Roma döneminde zenginliğin zirvesine ulaştı.' },
+  { date:'M.S. 2-4. yy', title:'Roma Dönemi', desc:'Zeugma en parlak çağını yaşadı. Villalarda yaratılan mozaikler bugün müzede sergileniyor.' },
+  { date:'395-1086', title:'Bizans Dönemi', desc:'Kale Roma kulesi olarak inşa edildi, genişletildi. Şehir stratejik önem taşıdı.' },
+  { date:'1067', title:'Selçuklu Fethi', desc:'Türkmen boyları bölgeye yerleşti. Şehir "Ayıntap" adıyla anılmaya başlandı.' },
+  { date:'1516', title:'Osmanlı Dönemi', desc:'Yavuz Sultan Selim döneminde Osmanlı topraklarına katıldı. Hanlar, hamamlar, camiler inşa edildi.' },
+  { date:'1920-1921', title:'Millî Mücadele', desc:'10 ay süren Fransız kuşatmasına direndi. Atatürk "Gazi" unvanını verdi; şehir Gaziantep adını aldı.' },
+  { date:'1973', title:'Arkeoloji Çağı', desc:'Zeugma\'da sistematik kazılar başladı. 2000\'de baraj suları yükselmeden önce acil kurtarma kazıları yapıldı.' },
+  { date:'2011', title:'Zeugma Mozaik Müzesi', desc:'Dünyanın en büyük mozaik müzesi açıldı. Çingene Kızı artık milyonlarca ziyaretçiyle buluşuyor.' },
+  { date:'2015', title:'UNESCO Gastronomi Şehri', desc:'Gaziantep, Türkiye\'nin ilk UNESCO Yaratıcı Gastronomi Şehri unvanını kazandı.' }
+];
+
+// ===== BUILD FUNCTIONS =====
+function buildCards(containerId, data) {
+  const grid = document.getElementById(containerId);
+  if (!grid) return;
+  data.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = 'card-' + item.id;
+    div.innerHTML = `
+      <div class="card-photo-area empty" id="photoArea-${item.id}">
+        <img class="card-photo-img" id="photoImg-${item.id}" src="" alt="" onclick="openLightbox('${item.id}')">
+        <div class="card-photo-overlay">
+          <button class="photo-overlay-btn" onclick="triggerPhotoUpload('${item.id}','${item.title}','${item.emoji}')">🔄 Change</button>
+          <button class="photo-overlay-btn danger" onclick="removePhoto('${item.id}')">🗑 Remove</button>
+        </div>
+        <div class="card-photo-count" id="photoCount-${item.id}">📷 1</div>
+      </div>
+      <button class="card-photo-upload-btn" id="uploadBtn-${item.id}" onclick="triggerPhotoUpload('${item.id}','${item.title}','${item.emoji}')">
+        📷 Add Your Photo
+      </button>
+      <span class="card-emoji">${item.emoji}</span>
+      <div class="card-check" id="check-${item.id}" onclick="toggleLandmark('${item.id}', ${item.xp}, '${item.title}')"></div>
+      <div class="card-body">
+        <div class="card-category">${item.cat}</div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-meta">
+          <span class="meta-tag">⏰ ${item.hours}</span>
+          <span class="meta-tag">💰 ${item.price}</span>
+          <span class="xp-tag">+${item.xp} XP</span>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+  document.getElementById('visitTotal').textContent = landmarks.length + antikKentler.length + muzeler.length + camiler.length + hanlar.length + kiliseler.length + evlerMesire.length;
+}
+
+function buildFoodCards(containerId, data) {
+  const grid = document.getElementById(containerId);
+  if (!grid) return;
+  data.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'food-card';
+    div.innerHTML = `<span class="food-emoji">${f.emoji}</span><div class="food-name">${f.name}</div><div class="food-desc">${f.desc}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function buildTimeline() {
+  const container = document.getElementById('timelineContainer');
+  if (!container) return;
+  tarihSerit.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'tl-item';
+    div.innerHTML = `
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-date">${item.date}</div>
+        <div class="tl-title">${item.title}</div>
+        <div class="tl-desc">${item.desc}</div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PHOTO ALBUM SYSTEM
+// ═══════════════════════════════════════════════════════════════
+
+// photoStore: { id -> { dataURL, title, emoji, cat, timestamp } }
+const photoStore = {};
+let currentUploadId   = null;
+let currentUploadMeta = {};
+let albumSelectedIds  = new Set();
+
+// ─── UPLOAD TRIGGER ───────────────────────────────────────────
+function triggerPhotoUpload(id, title, emoji) {
+  currentUploadId   = id;
+  currentUploadMeta = { title, emoji };
+  const input = document.getElementById('photoFileInput');
+  input.value = '';
+  input.onchange = handlePhotoSelected;
+  input.click();
+}
+
+function handlePhotoSelected(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const dataURL = ev.target.result;
+    const id      = currentUploadId;
+    const meta    = currentUploadMeta;
+
+    // Figure out category from the card
+    const cardEl   = document.getElementById('card-' + id);
+    const catEl    = cardEl ? cardEl.querySelector('.card-category') : null;
+    const cat      = catEl ? catEl.textContent : '';
+
+    photoStore[id] = {
+      dataURL,
+      title:     meta.title || id,
+      emoji:     meta.emoji || '📍',
+      cat,
+      timestamp: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+    };
+
+    applyPhotoToCard(id, dataURL);
+    updateAlbumNavCount();
+    addXP(15, 'Photo added: ' + (meta.title || id));
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyPhotoToCard(id, dataURL) {
+  const area     = document.getElementById('photoArea-' + id);
+  const img      = document.getElementById('photoImg-' + id);
+  const uploadBtn = document.getElementById('uploadBtn-' + id);
+  const cardEl   = document.getElementById('card-' + id);
+
+  if (!area || !img) return;
+  img.src = dataURL;
+  area.classList.remove('empty');
+  area.classList.add('has-photo');
+  if (uploadBtn) uploadBtn.style.display = 'none';
+  if (cardEl)   cardEl.classList.add('has-photo-data');
+}
+
+function removePhoto(id) {
+  delete photoStore[id];
+  const area     = document.getElementById('photoArea-' + id);
+  const img      = document.getElementById('photoImg-' + id);
+  const uploadBtn = document.getElementById('uploadBtn-' + id);
+  const cardEl   = document.getElementById('card-' + id);
+
+  if (area) { area.classList.add('empty'); area.classList.remove('has-photo'); }
+  if (img)  img.src = '';
+  if (uploadBtn) uploadBtn.style.display = '';
+  if (cardEl) cardEl.classList.remove('has-photo-data');
+
+  albumSelectedIds.delete(id);
+  updateAlbumNavCount();
+}
+
+function updateAlbumNavCount() {
+  const count  = Object.keys(photoStore).length;
+  const badge  = document.getElementById('albumNavCount');
+  const pill   = document.getElementById('albumNavPill');
+  if (!badge) return;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline-flex' : 'none';
+  if (count > 0 && pill) pill.style.animation = 'pulse 0.6s ease';
+}
+
+// ─── LIGHTBOX ─────────────────────────────────────────────────
+function openLightbox(id) {
+  const entry = photoStore[id];
+  if (!entry) return;
+  document.getElementById('lbImg').src       = entry.dataURL;
+  document.getElementById('lbCaption').textContent = entry.emoji + ' ' + entry.title;
+  document.getElementById('albumLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('albumLightbox').classList.remove('open');
+  // Don't reset overflow here — album might still be open
+  if (!document.getElementById('albumOverlay').classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+// ─── ALBUM MODAL ──────────────────────────────────────────────
+function openAlbum() {
+  albumSelectedIds = new Set(Object.keys(photoStore)); // select all by default
+  renderAlbum();
+  document.getElementById('albumOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAlbum() {
+  document.getElementById('albumOverlay').classList.remove('open');
+  if (!document.getElementById('albumLightbox').classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+function renderAlbum() {
+  const body    = document.getElementById('albumBody');
+  const entries = Object.entries(photoStore);
+
+  // Stats
+  const statEl = document.getElementById('albumStats');
+  statEl.innerHTML = `<strong>${entries.length}</strong> photo${entries.length !== 1 ? 's' : ''} · <strong>${entries.length}</strong> location${entries.length !== 1 ? 's' : ''}`;
+
+  if (entries.length === 0) {
+    body.innerHTML = `<div class="album-empty">
+      <div class="album-empty-icon">📷</div>
+      <div class="album-empty-text">No photos yet.<br>Visit a place and upload a photo to start your album.</div>
+    </div>`;
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'album-grid';
+
+  entries.forEach(([id, entry]) => {
+    const isSelected = albumSelectedIds.has(id);
+    const item = document.createElement('div');
+    item.className = 'album-item' + (isSelected ? ' selected' : '');
+    item.id = 'album-item-' + id;
+    item.innerHTML = `
+      <div class="album-item-sel-badge">✓</div>
+      <img class="album-item-img" src="${entry.dataURL}" alt="${entry.title}" onclick="openLightbox('${id}')">
+      <div class="album-item-info">
+        <div class="album-item-name">
+          <span class="album-item-emoji">${entry.emoji}</span>${entry.title}
+        </div>
+        <div class="album-item-cat">${entry.cat}</div>
+        <div class="album-item-date">📅 ${entry.timestamp}</div>
+      </div>`;
+    item.addEventListener('click', (e) => {
+      // don't toggle when clicking img directly (lightbox opens)
+      if (e.target.tagName === 'IMG') return;
+      if (albumSelectedIds.has(id)) {
+        albumSelectedIds.delete(id);
+        item.classList.remove('selected');
+      } else {
+        albumSelectedIds.add(id);
+        item.classList.add('selected');
+      }
+      updateSelectAllBtn();
+    });
+    grid.appendChild(item);
+  });
+
+  body.innerHTML = '';
+  body.appendChild(grid);
+  updateSelectAllBtn();
+}
+
+function albumToggleSelectAll() {
+  const entries = Object.keys(photoStore);
+  const allSelected = albumSelectedIds.size === entries.length;
+  if (allSelected) {
+    albumSelectedIds.clear();
+    document.querySelectorAll('.album-item').forEach(el => el.classList.remove('selected'));
+  } else {
+    entries.forEach(id => albumSelectedIds.add(id));
+    document.querySelectorAll('.album-item').forEach(el => el.classList.add('selected'));
+  }
+  updateSelectAllBtn();
+}
+
+function updateSelectAllBtn() {
+  const btn      = document.getElementById('albumSelectAllBtn');
+  const total    = Object.keys(photoStore).length;
+  const selected = albumSelectedIds.size;
+  if (!btn) return;
+  btn.textContent = selected === total ? '☑ Deselect All' : '☐ Select All';
+}
+
+// ─── SHARE CARD GENERATOR ─────────────────────────────────────
+function openShareModal() {
+  const selected = [...albumSelectedIds];
+  if (selected.length === 0) {
+    alert('Please select at least one photo to share.');
+    return;
+  }
+
+  document.getElementById('shareModal').classList.add('open');
+  document.getElementById('sharePreviewImg').style.display = 'none';
+  document.getElementById('shareSocials').style.display    = 'none';
+  document.getElementById('shareCopyBtn').style.display    = 'none';
+  document.getElementById('shareLoadingState').style.display = 'block';
+
+  setTimeout(() => generateShareCard(selected), 100);
+}
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+async function generateShareCard(selectedIds) {
+  const canvas  = document.getElementById('shareCanvas');
+  const ctx     = canvas.getContext('2d');
+  const W = 1080, H = 1080;
+  canvas.width  = W;
+  canvas.height = H;
+
+  const entries = selectedIds
+    .filter(id => photoStore[id])
+    .map(id => photoStore[id]);
+
+  if (entries.length === 0) return;
+
+  // ── Background ──
+  const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+  bgGrad.addColorStop(0,   '#0d0804');
+  bgGrad.addColorStop(0.5, '#1e1005');
+  bgGrad.addColorStop(1,   '#0a0503');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle grid pattern
+  ctx.strokeStyle = 'rgba(201,150,26,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // ── Layout: up to 6 photos ──
+  const count   = Math.min(entries.length, 6);
+  const photos  = entries.slice(0, count);
+  const layouts = getLayout(count);
+
+  // Load all images
+  const imgs = await Promise.all(photos.map(e => loadImg(e.dataURL)));
+
+  // Draw photos
+  for (let i = 0; i < layouts.length; i++) {
+    const { x, y, w, h } = layouts[i];
+    if (!imgs[i]) continue;
+    ctx.save();
+    roundRect(ctx, x, y, w, h, 8);
+    ctx.clip();
+    drawCover(ctx, imgs[i], x, y, w, h);
+
+    // Gradient overlay on each photo
+    const grad = ctx.createLinearGradient(x, y + h * 0.5, x, y + h);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(1, 'rgba(10,5,2,0.75)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(x, y, w, h);
+    ctx.restore();
+
+    // Caption under each photo
+    ctx.font = 'bold 22px serif';
+    ctx.fillStyle = 'rgba(240,192,64,0.9)';
+    ctx.textAlign = 'left';
+    const label = (photos[i].emoji || '') + ' ' + (photos[i].title || '');
+    ctx.fillText(label, x + 10, y + h - 12, w - 20);
+  }
+
+  // ── Top header bar ──
+  const headerH = 110;
+  const hGrad = ctx.createLinearGradient(0, 0, 0, headerH);
+  hGrad.addColorStop(0, 'rgba(10,5,2,0.97)');
+  hGrad.addColorStop(1, 'rgba(10,5,2,0)');
+  ctx.fillStyle = hGrad;
+  ctx.fillRect(0, 0, W, headerH);
+
+  // Gold top line
+  const lineGrad = ctx.createLinearGradient(0, 0, W, 0);
+  lineGrad.addColorStop(0, 'transparent');
+  lineGrad.addColorStop(0.2, '#C9961A');
+  lineGrad.addColorStop(0.8, '#F0C040');
+  lineGrad.addColorStop(1,   'transparent');
+  ctx.strokeStyle = lineGrad;
+  ctx.lineWidth   = 3;
+  ctx.beginPath(); ctx.moveTo(0, 3); ctx.lineTo(W, 3); ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.font      = 'bold 52px serif';
+  ctx.fillStyle = '#C9961A';
+  ctx.fillText('GAZIANTEP', W / 2, 64);
+
+  ctx.font      = '22px sans-serif';
+  ctx.fillStyle = 'rgba(245,236,215,0.55)';
+  ctx.fillText('My Journey · ' + new Date().getFullYear(), W / 2, 96);
+
+  // ── Bottom bar ──
+  const footerY = H - 90;
+  const fGrad   = ctx.createLinearGradient(0, footerY, 0, H);
+  fGrad.addColorStop(0, 'rgba(10,5,2,0)');
+  fGrad.addColorStop(1, 'rgba(10,5,2,0.97)');
+  ctx.fillStyle = fGrad;
+  ctx.fillRect(0, footerY, W, 90);
+
+  ctx.font      = '20px sans-serif';
+  ctx.fillStyle = 'rgba(245,236,215,0.4)';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${count} memory${count > 1 ? 'ies' : 'y'} · #GaziantepJourney · gaziantep-guide`, W / 2, H - 22);
+
+  // Bottom gold line
+  ctx.strokeStyle = lineGrad;
+  ctx.lineWidth   = 2;
+  ctx.beginPath(); ctx.moveTo(0, H - 3); ctx.lineTo(W, H - 3); ctx.stroke();
+
+  // ── Show result ──
+  const dataURL = canvas.toDataURL('image/jpeg', 0.93);
+  const previewImg = document.getElementById('sharePreviewImg');
+  previewImg.src = dataURL;
+  previewImg.style.display = 'block';
+  document.getElementById('shareLoadingState').style.display = 'none';
+  document.getElementById('shareSocials').style.display      = 'grid';
+  document.getElementById('shareCopyBtn').style.display      = 'block';
+
+  const caption = buildSocialCaption(entries, count);
+  document.getElementById('shareCopyBtn').setAttribute('data-caption', caption);
+  document.getElementById('shareSubText').textContent =
+    `${count} photo${count > 1 ? 's' : ''} selected — ready to share`;
+  document.getElementById('shareSubText').style.color = 'rgba(201,150,26,0.7)';
+}
+
+// ── Layout helpers ──────────────────────────────────────────
+function getLayout(n) {
+  const PAD = 12, TOP = 118, BOT = 100;
+  const AW = 1080 - PAD * 2;
+  const AH = 1080 - TOP - BOT - PAD;
+
+  if (n === 1) return [{ x: PAD, y: TOP, w: AW, h: AH }];
+  if (n === 2) return [
+    { x: PAD,              y: TOP, w: AW/2 - PAD/2, h: AH },
+    { x: PAD + AW/2 + PAD/2, y: TOP, w: AW/2 - PAD/2, h: AH },
+  ];
+  if (n === 3) return [
+    { x: PAD,              y: TOP,         w: AW/2 - PAD/2, h: AH },
+    { x: PAD + AW/2 + PAD/2, y: TOP,         w: AW/2 - PAD/2, h: AH/2 - PAD/2 },
+    { x: PAD + AW/2 + PAD/2, y: TOP + AH/2 + PAD/2, w: AW/2 - PAD/2, h: AH/2 - PAD/2 },
+  ];
+  if (n === 4) {
+    const hw = AW/2 - PAD/2, hh = AH/2 - PAD/2;
+    return [
+      { x: PAD,              y: TOP,         w: hw, h: hh },
+      { x: PAD + hw + PAD,   y: TOP,         w: hw, h: hh },
+      { x: PAD,              y: TOP+hh+PAD,  w: hw, h: hh },
+      { x: PAD + hw + PAD,   y: TOP+hh+PAD,  w: hw, h: hh },
+    ];
+  }
+  if (n === 5) {
+    const tw = AW/3 - PAD * 2/3, bw = AW/2 - PAD/2, halfH = AH/2 - PAD/2;
+    return [
+      { x: PAD,              y: TOP,        w: tw, h: halfH },
+      { x: PAD+tw+PAD,       y: TOP,        w: tw, h: halfH },
+      { x: PAD+tw*2+PAD*2,   y: TOP,        w: tw, h: halfH },
+      { x: PAD,              y: TOP+halfH+PAD, w: bw, h: halfH },
+      { x: PAD+bw+PAD,       y: TOP+halfH+PAD, w: bw, h: halfH },
+    ];
+  }
+  // 6
+  const tw = AW/3 - PAD * 2/3, hh = AH/2 - PAD/2;
+  return [0,1,2,3,4,5].map(i => ({
+    x: PAD + (i % 3) * (tw + PAD),
+    y: TOP + Math.floor(i / 3) * (hh + PAD),
+    w: tw, h: hh
+  }));
+}
+
+function loadImg(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload  = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function drawCover(ctx, img, x, y, w, h) {
+  const scale = Math.max(w / img.width, h / img.height);
+  const sw    = img.width  * scale;
+  const sh    = img.height * scale;
+  const sx    = x + (w - sw) / 2;
+  const sy    = y + (h - sh) / 2;
+  ctx.drawImage(img, sx, sy, sw, sh);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function buildSocialCaption(entries, count) {
+  const names = entries.slice(0, 4).map(e => e.emoji + ' ' + e.title).join(' · ');
+  return `Exploring Gaziantep — UNESCO Gastronomy City 🏛️✨\n${names}${count > 4 ? ' + more' : ''}\n\n#GaziantepJourney #Gaziantep #UNESCO #TravelTurkey #AntepLove`;
+}
+
+// ─── SHARE ACTIONS ────────────────────────────────────────────
+function getShareImageDataURL() {
+  return document.getElementById('sharePreviewImg').src;
+}
+
+function shareDownload() {
+  const a    = document.createElement('a');
+  a.href     = getShareImageDataURL();
+  a.download = 'GaziantepJourney_' + Date.now() + '.jpg';
+  a.click();
+}
+
+function shareTwitter() {
+  const caption = encodeURIComponent(
+    'Exploring Gaziantep — UNESCO Gastronomy City 🏛️✨\n#GaziantepJourney #Gaziantep #TravelTurkey'
+  );
+  window.open('https://twitter.com/intent/tweet?text=' + caption, '_blank');
+}
+
+function shareWhatsApp() {
+  const caption = encodeURIComponent(buildSocialCaption(
+    Object.values(photoStore), Object.keys(photoStore).length
+  ));
+  window.open('https://wa.me/?text=' + caption, '_blank');
+}
+
+function shareInstagram() {
+  // Instagram doesn't allow direct share from web; download and prompt
+  shareDownload();
+  setTimeout(() => {
+    alert('📸 Image downloaded!\nOpen Instagram and share from your gallery.\nDon\'t forget to add #GaziantepJourney 🌟');
+  }, 500);
+}
+
+function copyShareText() {
+  const btn     = document.getElementById('shareCopyBtn');
+  const caption = btn.getAttribute('data-caption') || buildSocialCaption(Object.values(photoStore), Object.keys(photoStore).length);
+  navigator.clipboard.writeText(caption).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied to clipboard!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }).catch(() => {
+    prompt('Copy this caption:', caption);
+  });
+}
+
+// ─── CLOSE ALBUM OVERLAY ON BACKDROP ─────────────────────────
+document.getElementById('albumOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAlbum();
+});
+document.getElementById('shareModal').addEventListener('click', function(e) {
+  if (e.target === this) closeShareModal();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ONBOARDING & ROUTE PLANNER
+// ═══════════════════════════════════════════════════════════════
+
+const OB_QUESTIONS = [
+  {
+    id: 'days',
+    label: 'TRIP LENGTH',
+    question: 'How many days are you spending in Gaziantep?',
+    type: 'days',
+    days: [
+      { val: 1, label: '1 Day',  sub: 'Quick visit' },
+      { val: 3, label: '3 Days', sub: 'Weekend trip' },
+      { val: 5, label: '5 Days', sub: 'Deep dive' },
+      { val: 7, label: '7 Days', sub: 'Full explorer' },
+    ]
+  },
+  {
+    id: 'traveller',
+    label: 'WHO ARE YOU?',
+    question: 'Who are you travelling with?',
+    type: 'single',
+    cols: 'cols-2',
+    options: [
+      { icon: '🧍', title: 'Solo', desc: 'My own pace, no compromises' },
+      { icon: '💑', title: 'Couple', desc: 'Romantic & cultural discovery' },
+      { icon: '👨‍👩‍👧‍👦', title: 'Family', desc: 'Kids, fun & easy activities' },
+      { icon: '👯', title: 'Friends', desc: 'Social, food & nightlife' },
+    ]
+  },
+  {
+    id: 'vibe',
+    label: 'YOUR VIBE',
+    question: 'What kind of experience are you after?',
+    type: 'multi',
+    cols: 'cols-2',
+    hint: 'Select all that apply',
+    options: [
+      { icon: '🍽️', title: 'Food & Gastronomy', desc: 'Baklava, beyran, kebab, markets' },
+      { icon: '🏛️', title: 'History & Culture', desc: 'Mosques, museums, ancient sites' },
+      { icon: '🛍️', title: 'Shopping & Crafts', desc: 'Bazaars, copperwork, spices' },
+      { icon: '🌿', title: 'Nature & Day Trips', desc: 'Halfeti, Rumkale, forests' },
+      { icon: '🎨', title: 'Art & Architecture', desc: 'Zeugma mosaics, Ottoman houses' },
+      { icon: '⚔️', title: 'War History', desc: 'Resistance, the castle, Kurtuluş' },
+    ]
+  },
+  {
+    id: 'pace',
+    label: 'YOUR PACE',
+    question: 'How do you prefer to travel?',
+    type: 'single',
+    cols: 'cols-3',
+    options: [
+      { icon: '🐢', title: 'Leisurely', desc: 'Few stops, deep dives, long meals' },
+      { icon: '⚖️', title: 'Balanced', desc: 'Good mix of sights & rest' },
+      { icon: '🚀', title: 'Packed', desc: 'See as much as possible' },
+    ]
+  },
+  {
+    id: 'food',
+    label: 'FOOD FOCUS',
+    question: 'How adventurous is your palate?',
+    type: 'single',
+    cols: 'cols-2',
+    options: [
+      { icon: '🤩', title: 'All in', desc: 'Offal, lamb head, raw meat — bring it' },
+      { icon: '😋', title: 'Adventurous', desc: 'Will try most things with curiosity' },
+      { icon: '🙂', title: 'Moderate', desc: 'Familiar flavors with local twists' },
+      { icon: '🥗', title: 'Careful', desc: 'Vegetarian or very selective' },
+    ]
+  },
+  {
+    id: 'budget',
+    label: 'YOUR BUDGET',
+    question: 'What\'s your daily spending comfort?',
+    type: 'single',
+    cols: 'cols-3',
+    options: [
+      { icon: '💰', title: 'Budget', desc: 'Under ₺500/day — street food & lokanta' },
+      { icon: '💳', title: 'Mid-range', desc: '₺500–1500/day — proper restaurants' },
+      { icon: '💎', title: 'Splurge', desc: '₺1500+/day — finest experiences' },
+    ]
+  },
+];
+
+let obStep = 0;
+let obAnswers = {};
+let obMultiTemp = [];
+
+function openOnboarding() {
+  obStep = 0;
+  obAnswers = {};
+  obMultiTemp = [];
+  document.getElementById('obOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderObStep();
+}
+
+function closeOnboarding() {
+  document.getElementById('obOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click
+document.getElementById('obOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeOnboarding();
+});
+
+function renderObStep() {
+  const total = OB_QUESTIONS.length;
+  const q = OB_QUESTIONS[obStep];
+
+  // Progress bar
+  const track = document.getElementById('obProgressTrack');
+  track.innerHTML = Array.from({length: total}, (_, i) => {
+    const cls = i < obStep ? 'done' : i === obStep ? 'active' : '';
+    return `<div class="ob-progress-step ${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('obStepLabel').textContent = `QUESTION ${obStep + 1} OF ${total}`;
+  document.getElementById('obQuestion').textContent = q.question;
+
+  // Back button
+  document.getElementById('obBtnBack').style.visibility = obStep === 0 ? 'hidden' : 'visible';
+
+  // Body
+  const body = document.getElementById('obBody');
+  body.innerHTML = '';
+
+  if (q.type === 'days') {
+    const wrap = document.createElement('div');
+    wrap.className = 'ob-days';
+    q.days.forEach(d => {
+      const dw = document.createElement('div');
+      dw.className = 'ob-day-wrap';
+      const btn = document.createElement('button');
+      btn.className = 'ob-day-btn' + (obAnswers.days === d.val ? ' selected' : '');
+      btn.textContent = d.label;
+      btn.onclick = () => {
+        obAnswers.days = d.val;
+        document.querySelectorAll('.ob-day-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        enableNext();
+      };
+      const lbl = document.createElement('div');
+      lbl.className = 'ob-day-label';
+      lbl.textContent = d.sub;
+      dw.appendChild(btn);
+      dw.appendChild(lbl);
+      wrap.appendChild(dw);
+    });
+    body.appendChild(wrap);
+
+  } else if (q.type === 'single') {
+    const grid = document.createElement('div');
+    grid.className = `ob-options ${q.cols || 'cols-2'}`;
+    q.options.forEach(opt => {
+      const el = document.createElement('div');
+      el.className = 'ob-option' + (obAnswers[q.id] === opt.title ? ' selected' : '');
+      el.innerHTML = `<span class="ob-opt-icon">${opt.icon}</span>
+        <div class="ob-opt-text">
+          <div class="ob-opt-title">${opt.title}</div>
+          <div class="ob-opt-desc">${opt.desc}</div>
+        </div>`;
+      el.onclick = () => {
+        obAnswers[q.id] = opt.title;
+        document.querySelectorAll('.ob-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        enableNext();
+        // Auto-advance on single select after short delay
+        setTimeout(() => { if (obStep < OB_QUESTIONS.length - 1) obNext(); }, 380);
+      };
+      grid.appendChild(el);
+    });
+    body.appendChild(grid);
+
+  } else if (q.type === 'multi') {
+    // restore temp
+    if (!obAnswers[q.id]) obAnswers[q.id] = [];
+    obMultiTemp = [...obAnswers[q.id]];
+
+    const hint = document.createElement('div');
+    hint.className = 'ob-hint';
+    hint.textContent = '✦ ' + (q.hint || 'Select all that apply');
+    body.appendChild(hint);
+
+    const grid = document.createElement('div');
+    grid.className = `ob-options ${q.cols || 'cols-2'}`;
+    grid.style.marginTop = '0.5rem';
+    q.options.forEach(opt => {
+      const el = document.createElement('div');
+      const sel = obMultiTemp.includes(opt.title);
+      el.className = 'ob-option' + (sel ? ' selected' : '');
+      el.innerHTML = `<span class="ob-opt-icon">${opt.icon}</span>
+        <div class="ob-opt-text">
+          <div class="ob-opt-title">${opt.title}</div>
+          <div class="ob-opt-desc">${opt.desc}</div>
+        </div>`;
+      el.onclick = () => {
+        if (obMultiTemp.includes(opt.title)) {
+          obMultiTemp = obMultiTemp.filter(v => v !== opt.title);
+          el.classList.remove('selected');
+        } else {
+          obMultiTemp.push(opt.title);
+          el.classList.add('selected');
+        }
+        obAnswers[q.id] = [...obMultiTemp];
+        obMultiTemp.length > 0 ? enableNext() : disableNext();
+      };
+      grid.appendChild(el);
+    });
+    body.appendChild(grid);
+  }
+
+  // Check if already answered
+  if (q.type === 'days' && obAnswers.days) enableNext();
+  else if (q.type === 'single' && obAnswers[q.id]) enableNext();
+  else if (q.type === 'multi' && obAnswers[q.id] && obAnswers[q.id].length) enableNext();
+  else disableNext();
+
+  // Update next button label on last step
+  const nextBtn = document.getElementById('obBtnNext');
+  nextBtn.textContent = obStep === OB_QUESTIONS.length - 1 ? 'Generate My Route ✦' : 'Continue →';
+}
+
+function enableNext()  { document.getElementById('obBtnNext').disabled = false; }
+function disableNext() { document.getElementById('obBtnNext').disabled = true; }
+
+function obBack() {
+  if (obStep > 0) { obStep--; renderObStep(); }
+}
+
+function obNext() {
+  if (obStep < OB_QUESTIONS.length - 1) {
+    obStep++;
+    renderObStep();
+  } else {
+    generateRoute();
+  }
+}
+
+// ─── ROUTE GENERATION ───────────────────────────────────────────
+async function generateRoute() {
+  showLoading();
+  const prompt = buildPrompt(obAnswers);
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2500,
+        system: `You are a Gaziantep expert travel guide. Generate personalized ${obAnswers.days}-day itineraries.
+Always respond with ONLY valid JSON — no markdown, no explanation, no code fences.
+JSON structure:
+{
+  "routeTitle": "string — evocative name for this route",
+  "tagline": "string — one romantic sentence describing the experience",
+  "badges": ["string", "string", "string"],
+  "days": [
+    {
+      "dayNum": 1,
+      "title": "string",
+      "theme": "string (e.g. HISTORY & MOSAIC ART)",
+      "stops": [
+        {
+          "time": "09:00",
+          "name": "string",
+          "detail": "string — 1-2 sentences what to do/see/eat there",
+          "tags": ["string", "string"],
+          "xp": 60
+        }
+      ],
+      "tip": "string — one insider tip for the day"
+    }
+  ]
+}
+Rules:
+- Days must be ${obAnswers.days} day(s)
+- Each day should have 4-6 stops appropriate for the pace (${obAnswers.pace || 'Balanced'})
+- Tailor stops to vibes: ${(obAnswers.vibe || []).join(', ') || 'general'}
+- Budget is ${obAnswers.budget || 'Mid-range'} — match restaurant/experience recommendations
+- Traveller type is ${obAnswers.traveller || 'Solo'} — adapt accordingly
+- Food adventurousness is ${obAnswers.food || 'Adventurous'}
+- Use REAL Gaziantep locations only: Zeugma Mosaic Museum, Gaziantep Castle, Zincirli Bedesten, Yesemek Open Air Museum, Rumkale, Halfeti, Dulukbaba Forest, Emine Gogus Culinary Museum, Museum of Toys, Kent Museum, Hasan Suzer Ethnography Museum, Coppersmith Bazaar, Katmer Pınari, Imam Cagdas, Kocak Baklava, Yesemek Restaurant, Esgili Restaurant, Sakip Usta, historic mosques, hammams etc.
+- XP values should be 25-100`,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await resp.json();
+    const raw = data.content.map(c => c.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const route = JSON.parse(clean);
+    showRoute(route);
+  } catch (err) {
+    showError();
+  }
+}
+
+function buildPrompt(a) {
+  return `Generate a personalized ${a.days}-day Gaziantep itinerary for:
+- Traveller: ${a.traveller || 'Solo'}
+- Interests: ${(a.vibe || []).join(', ') || 'General exploration'}
+- Pace: ${a.pace || 'Balanced'}
+- Food adventurousness: ${a.food || 'Adventurous'}
+- Budget: ${a.budget || 'Mid-range'}
+Create an inspiring, deeply curated route. Make it feel personal and exciting.`;
+}
+
+function showLoading() {
+  const modal = document.getElementById('obModal');
+  modal.innerHTML = `
+    <div class="ob-loading">
+      <div class="ob-spinner"></div>
+      <div class="ob-loading-text">Crafting your personal Gaziantep journey…</div>
+      <div class="ob-loading-sub">CONSULTING THE ORACLE OF ANTEP</div>
+    </div>`;
+}
+
+function showError() {
+  const modal = document.getElementById('obModal');
+  modal.innerHTML = `
+    <div class="ob-error">
+      <div class="ob-error-icon">⚠️</div>
+      <div class="ob-error-msg">Could not generate your route. Please try again.<br>
+      <small style="opacity:0.5">Make sure the Anthropic API key is configured.</small></div>
+      <br>
+      <button class="ob-btn-next" onclick="openOnboarding()" style="margin:0 auto;display:block;">Try Again</button>
+      <br>
+      <button class="ob-btn-back" onclick="closeOnboarding()" style="margin:0 auto;display:block;">Close</button>
+    </div>`;
+}
+
+function showRoute(route) {
+  const modal = document.getElementById('obModal');
+
+  const daysHtml = route.days.map(day => `
+    <div class="route-day">
+      <div class="route-day-header">
+        <div class="route-day-num">${day.dayNum}</div>
+        <div>
+          <div class="route-day-title">${day.title}</div>
+          <div class="route-day-theme">${day.theme}</div>
+        </div>
+      </div>
+      <div class="route-stops">
+        ${day.stops.map(stop => `
+          <div class="route-stop">
+            <div class="route-stop-time">${stop.time}</div>
+            <div class="route-stop-info">
+              <div class="route-stop-name">${stop.name}</div>
+              <div class="route-stop-detail">${stop.detail}</div>
+              <div class="route-stop-tags">
+                ${(stop.tags || []).map(t => `<span class="route-stop-tag">${t}</span>`).join('')}
+                <span class="xp-pill">+${stop.xp} XP</span>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${day.tip ? `<div class="route-tip">💡 ${day.tip}</div>` : ''}
+    </div>`).join('');
+
+  const badgesHtml = (route.badges || []).map(b => `<span class="route-badge">${b}</span>`).join('');
+
+  modal.innerHTML = `
+    <div class="ob-header" style="border-radius:20px 20px 0 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="ob-step-label">YOUR PERSONALISED ROUTE</div>
+        <button onclick="closeOnboarding()" style="background:none;border:none;color:rgba(245,236,215,0.4);cursor:pointer;font-size:1.2rem;padding:0 0.2rem;">✕</button>
+      </div>
+    </div>
+    <div class="ob-result">
+      <div class="route-hero-banner">
+        <div class="route-title">${route.routeTitle}</div>
+        <div class="route-tagline">${route.tagline}</div>
+        <div class="route-badges">${badgesHtml}</div>
+      </div>
+
+      ${daysHtml}
+
+      <div class="route-actions">
+        <button class="route-action-btn primary" onclick="applyRouteXP(${JSON.stringify(route).replace(/"/g, '&quot;')})">
+          ✦ Add to Quest Tracker
+        </button>
+        <button class="route-action-btn" onclick="openOnboarding()">🔄 New Route</button>
+        <button class="route-action-btn" onclick="closeOnboarding()">✕ Close</button>
+      </div>
+    </div>`;
+}
+
+function applyRouteXP(route) {
+  let totalXP = 0;
+  route.days.forEach(day => {
+    day.stops.forEach(stop => { totalXP += (stop.xp || 50); });
+  });
+  addXP(totalXP, `${route.routeTitle} Route Loaded!`);
+  closeOnboarding();
+  document.querySelector('#explore').scrollIntoView({ behavior: 'smooth' });
+}
+
+buildLandmarks();
+buildFood();
+buildQuests();
+buildInfo();
+buildLeaderboard();
+loadQuestion();
+createStars();
+// New KTB sections
+buildCards('antikGrid', antikKentler);
+buildCards('muzelerGrid', muzeler);
+buildCards('camilerGrid', camiler);
+buildCards('hanlarGrid', hanlar);
+buildCards('kiliselerGrid', kiliseler);
+buildCards('evlerGrid', evlerMesire);
+buildFoodCards('elsanatlarGrid', elsanatlar);
+buildFoodCards('nealinirGrid', nealinir);
+buildTimeline();
+</script>
+</body>
+</html>
