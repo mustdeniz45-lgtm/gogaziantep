@@ -72,50 +72,86 @@ button{cursor:pointer;font-family:'Inter',sans-serif}
 
 /* ===== HERO ===== */
 #hero{
-  position:relative;height:100vh;min-height:600px;
+  position:relative;min-height:560px;
   display:flex;align-items:center;justify-content:center;text-align:center;
-  overflow:hidden;
+  overflow:hidden;background:#1a0f05;
 }
-#hero-bg{
-  position:absolute;inset:0;
-  background:url('gaziantep_collage_1080x1920.jpg') center/cover no-repeat;
+#hero-mosaic{
+  position:absolute;inset:0;opacity:.12;
+  background-image:
+    repeating-conic-gradient(#c8822a 0% 25%,transparent 0% 50%) 0 0/32px 32px,
+    repeating-conic-gradient(#8b5e1a 0% 25%,transparent 0% 50%) 16px 16px/32px 32px;
 }
-#hero-bg::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(26,16,8,.7) 0%,rgba(26,16,8,.5) 50%,rgba(26,16,8,.9) 100%);
+#hero-ring1,#hero-ring2,#hero-ring3{
+  position:absolute;border-radius:50%;border:1px solid #c8822a;opacity:.12;
+  animation:heroRing 6s ease-in-out infinite;
+}
+#hero-ring1{width:600px;height:600px;top:-200px;right:-150px}
+#hero-ring2{width:400px;height:400px;top:-120px;right:-80px;animation-delay:1.5s}
+#hero-ring3{width:200px;height:200px;top:-30px;right:20px;animation-delay:3s}
+@keyframes heroRing{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:.18;transform:scale(1.02)}}
+#hero-arch{
+  position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);
+  width:900px;height:420px;border-radius:450px 450px 0 0;
+  background:radial-gradient(ellipse at 50% 20%,#3d1f06 0%,#1a0f05 70%);
+  border-top:1px solid rgba(200,130,42,.2);
+}
+#hero-bottom-bar{
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,transparent,#4a7c3f,#c8822a,#f5d07a,#c8822a,#4a7c3f,transparent);
 }
 #particles{position:absolute;inset:0;pointer-events:none;z-index:1}
-.hero-content{position:relative;z-index:2;padding:20px}
+.hero-content{position:relative;z-index:2;padding:40px 20px 60px}
+.hero-city-label{
+  display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:16px;
+  animation:heroFadeDown .8s ease both;
+}
+.hero-city-line{height:1px;width:50px}
+.hero-city-line.left{background:linear-gradient(to right,transparent,#c8822a)}
+.hero-city-line.right{background:linear-gradient(to left,transparent,#c8822a)}
+.hero-city-text{
+  font-family:'Crimson Pro',serif;font-weight:300;font-style:italic;
+  font-size:12px;letter-spacing:.3em;color:#c8822a;text-transform:uppercase;
+}
 .hero-title{
   font-family:'Cinzel',serif;font-weight:900;
-  font-size:clamp(2.8rem,10vw,7rem);
-  background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--rust));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:.1em;line-height:1;margin-bottom:12px;
-  text-shadow:none;
-  filter:drop-shadow(0 0 30px rgba(201,150,26,0.4));
+  font-size:clamp(2.5rem,10vw,6rem);
+  color:#f5d07a;
+  letter-spacing:.08em;line-height:.95;margin-bottom:10px;
+  animation:heroFadeDown .9s ease .1s both;
+}
+.hero-title-accent{
+  display:block;font-size:.38em;
+  font-family:'Playfair Display',serif;font-weight:400;font-style:italic;
+  color:#c8822a;letter-spacing:.2em;margin-top:.4em;
 }
 .hero-sub{
-  font-family:'Inter',sans-serif;font-style:italic;
-  font-size:clamp(1.1rem,3vw,1.8rem);color:#fff;
-  margin-bottom:24px;letter-spacing:.05em;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(.9rem,2vw,1.15rem);color:rgba(200,130,42,.75);
+  margin-bottom:24px;letter-spacing:.08em;
+  animation:heroFadeDown 1s ease .2s both;
 }
-.hero-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:40px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:36px;animation:heroFadeUp 1s ease .4s both}
 .hero-badge{
-  padding:7px 18px;border-radius:20px;
-  border:1px solid rgba(255,255,255,0.5);
-  background:rgba(255,255,255,0.15);
-  font-size:.75rem;color:#fff;
-  backdrop-filter:blur(4px);letter-spacing:.05em;
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border:1px solid rgba(200,130,42,.35);border-radius:2px;
+  background:rgba(200,130,42,.07);
+  font-size:.7rem;color:#e8b86d;letter-spacing:.1em;text-transform:uppercase;
+  font-family:'Lato',sans-serif;font-weight:300;
 }
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:#c8822a;flex-shrink:0}
+.hero-badge-dot.green{background:#4a7c3f}
+.hero-badge-dot.gold{background:#f5d07a}
 .scroll-hint{
-  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  color:#fff;font-size:.75rem;letter-spacing:.1em;z-index:2;
-  animation:bounce 2s infinite;
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  color:#c8822a;font-size:.7rem;letter-spacing:.1em;z-index:2;
+  animation:bounce 2s infinite;font-style:italic;
 }
-.scroll-hint svg{width:24px;height:24px;stroke:#fff;fill:none}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+.scroll-hint svg{width:20px;height:20px;stroke:#c8822a;fill:none}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@keyframes heroFadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== STATS BAND ===== */
 #stats{
@@ -937,17 +973,32 @@ body{padding-bottom:72px}
 
 <!-- HERO -->
 <section id="hero" data-page="explore">
-  <div id="hero-bg"></div>
+  <div id="hero-mosaic"></div>
+  <div id="hero-ring1"></div>
+  <div id="hero-ring2"></div>
+  <div id="hero-ring3"></div>
+  <div id="hero-arch"></div>
   <canvas id="particles"></canvas>
   <div class="hero-content">
-    <h1 class="hero-title">GAZİANTEP</h1>
-    <p class="hero-sub" data-en="City of Legends" data-tr="Efsaneler Şehri">City of Legends</p>
+    <div class="hero-city-label">
+      <div class="hero-city-line left"></div>
+      <span class="hero-city-text" data-en="UNESCO Gastronomy Capital · 6000 BC" data-tr="UNESCO Gastronomi Başkenti · MÖ 6000">UNESCO Gastronomy Capital · 6000 BC</span>
+      <div class="hero-city-line right"></div>
+    </div>
+    <h1 class="hero-title">
+      GAZİANTEP
+      <span class="hero-title-accent" data-en="Dünyanın En İyi Fıstığının Yurdu" data-tr="Dünyanın En İyi Fıstığının Yurdu">Dünyanın En İyi Fıstığının Yurdu</span>
+    </h1>
+    <p class="hero-sub" data-en="Where ancient copper meets the scent of baklava" data-tr="Antik bakırın baklava kokusuyla buluştuğu şehir">Where ancient copper meets the scent of baklava</p>
     <div class="hero-badges">
-      <span class="hero-badge" data-en="UNESCO Creative City" data-tr="UNESCO Yaratıcı Şehir">UNESCO Creative City</span>
-      <span class="hero-badge" data-en="6000 BC Heritage" data-tr="MÖ 6000 Mirası">6000 BC Heritage</span>
-      <span class="hero-badge" data-en="Gastronomy Capital" data-tr="Gastronomi Başkenti">Gastronomy Capital</span>
+      <span class="hero-badge"><span class="hero-badge-dot gold"></span><span data-en="Baklava Kingdom" data-tr="Baklava Krallığı">Baklava Kingdom</span></span>
+      <span class="hero-badge"><span class="hero-badge-dot green"></span><span data-en="Pistachio Heritage" data-tr="Fıstık Mirası">Pistachio Heritage</span></span>
+      <span class="hero-badge"><span class="hero-badge-dot"></span><span data-en="Zeugma Mosaics" data-tr="Zeugma Mozaikleri">Zeugma Mosaics</span></span>
+      <span class="hero-badge"><span class="hero-badge-dot gold"></span><span data-en="400+ Dishes" data-tr="400+ Yemek">400+ Dishes</span></span>
+      <span class="hero-badge"><span class="hero-badge-dot green"></span><span data-en="6,000 Years" data-tr="6.000 Yıl">6,000 Years</span></span>
     </div>
   </div>
+  <div id="hero-bottom-bar"></div>
   <div class="scroll-hint">
     <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     <span data-en="Scroll to Explore" data-tr="Keşfetmek için Kaydır">Scroll to Explore</span>
@@ -1634,18 +1685,18 @@ const mansions = [
 ];
 
 const foods = [
-  { emoji:'🥮', name:{en:'Baklava',tr:'Baklava'}, desc:{en:'Pistachio-filled pastry, the crown jewel of Gaziantep cuisine.',tr:'Antep fıstıklı hamur işi, Gaziantep mutfağının taç mücevheri.'} },
-  { emoji:'🍖', name:{en:'Antep Kebabı',tr:'Antep Kebabı'}, desc:{en:'Slow-cooked lamb served on crispy flatbread.',tr:'Gevrek yufka ekmeğinin üzerinde servis edilen yavaş pişmiş kuzu.'} },
-  { emoji:'🥐', name:{en:'Katmer',tr:'Katmer'}, desc:{en:'Crispy layered pastry filled with clotted cream and pistachio.',tr:'Kaymak ve Antep fıstığı dolgulu gevrek katmanlı hamur işi.'} },
-  { emoji:'🫓', name:{en:'Lahmacun',tr:'Lahmacun'}, desc:{en:'Thin crispy meat flatbread — the Turkish pizza.',tr:'İnce gevrek etli pide — Türk pizzası.'} },
-  { emoji:'🍲', name:{en:'Beyran Çorbası',tr:'Beyran Çorbası'}, desc:{en:'Rich lamb broth breakfast soup, a Gaziantep specialty.',tr:'Zengin kuzu suyu kahvaltı çorbası, Gaziantep\'e özgü.'} },
-  { emoji:'🫕', name:{en:'Yuvarlama',tr:'Yuvarlama'}, desc:{en:'Hearty lamb and chickpea stew, a winter comfort dish.',tr:'Yürekten ısıtan kuzu ve nohut yahnisi, kış yemeği.'} },
-  { emoji:'🍡', name:{en:'Simit Kebabı',tr:'Simit Kebabı'}, desc:{en:'Sesame-crusted meat skewer with aromatic spices.',tr:'Aromatik baharatlarla susam kabuklu et şişi.'} },
-  { emoji:'🥩', name:{en:'Ciğer Kebabı',tr:'Ciğer Kebabı'}, desc:{en:'Spiced lamb liver kebab, a street food classic.',tr:'Baharatlı kuzu ciğer kebabı, sokak yemeği klasiği.'} },
-  { emoji:'🌯', name:{en:'Fıstıklı Sarma',tr:'Fıstıklı Sarma'}, desc:{en:'Delicate pastry rolls filled with crushed pistachio.',tr:'Ezilmiş Antep fıstığı dolgulu narin hamur ruloları.'} },
-  { emoji:'🍆', name:{en:'Ali Nazik',tr:'Ali Nazik'}, desc:{en:'Smoked eggplant with yogurt, topped with spiced lamb.',tr:'Yoğurtlu közlenmiş patlıcan, üzerinde baharatlı kuzu.'} },
-  { emoji:'🥟', name:{en:'Oruk',tr:'Oruk'}, desc:{en:'Stuffed bulgur dumplings with a savory meat filling.',tr:'Savurmalı et dolgulu bulgur köftesi.'} },
-  { emoji:'🍯', name:{en:'Şıllık',tr:'Şıllık'}, desc:{en:'Traditional sesame and grape molasses dessert.',tr:'Geleneksel susam ve pekmez tatlısı.'} },
+  { emoji:'🥮', img:'foods/baklava.jpg', name:{en:'Baklava',tr:'Baklava'}, desc:{en:'Pistachio-filled pastry, the crown jewel of Gaziantep cuisine.',tr:'Antep fıstıklı hamur işi, Gaziantep mutfağının taç mücevheri.'} },
+  { emoji:'🍖', img:'foods/antep kebabı (kıyma.jpg', name:{en:'Antep Kebabı',tr:'Antep Kebabı'}, desc:{en:'Slow-cooked lamb served on crispy flatbread.',tr:'Gevrek yufka ekmeğinin üzerinde servis edilen yavaş pişmiş kuzu.'} },
+  { emoji:'🥐', img:'foods/katmer.jpg', name:{en:'Katmer',tr:'Katmer'}, desc:{en:'Crispy layered pastry filled with clotted cream and pistachio.',tr:'Kaymak ve Antep fıstığı dolgulu gevrek katmanlı hamur işi.'} },
+  { emoji:'🫓', img:'foods/lahmacun.jpg', name:{en:'Lahmacun',tr:'Lahmacun'}, desc:{en:'Thin crispy meat flatbread — the Turkish pizza.',tr:'İnce gevrek etli pide — Türk pizzası.'} },
+  { emoji:'🍲', img:'foods/beyran.jpg', name:{en:'Beyran Çorbası',tr:'Beyran Çorbası'}, desc:{en:'Rich lamb broth breakfast soup, a Gaziantep specialty.',tr:'Zengin kuzu suyu kahvaltı çorbası, Gaziantep\'e özgü.'} },
+  { emoji:'🫕', img:'foods/yuvarlama.jpg', name:{en:'Yuvarlama',tr:'Yuvarlama'}, desc:{en:'Hearty lamb and chickpea stew, a winter comfort dish.',tr:'Yürekten ısıtan kuzu ve nohut yahnisi, kış yemeği.'} },
+  { emoji:'🍡', img:'foods/simit kebabı.jpg', name:{en:'Simit Kebabı',tr:'Simit Kebabı'}, desc:{en:'Sesame-crusted meat skewer with aromatic spices.',tr:'Aromatik baharatlarla susam kabuklu et şişi.'} },
+  { emoji:'🥩', img:'foods/ciğer kebabı.jpg', name:{en:'Ciğer Kebabı',tr:'Ciğer Kebabı'}, desc:{en:'Spiced lamb liver kebab, a street food classic.',tr:'Baharatlı kuzu ciğer kebabı, sokak yemeği klasiği.'} },
+  { emoji:'🌯', img:'foods/fıstıklı sarma.jpg', name:{en:'Fıstıklı Sarma',tr:'Fıstıklı Sarma'}, desc:{en:'Delicate pastry rolls filled with crushed pistachio.',tr:'Ezilmiş Antep fıstığı dolgulu narin hamur ruloları.'} },
+  { emoji:'🍆', img:'foods/ali nazik kebabı.jpg', name:{en:'Ali Nazik',tr:'Ali Nazik'}, desc:{en:'Smoked eggplant with yogurt, topped with spiced lamb.',tr:'Yoğurtlu közlenmiş patlıcan, üzerinde baharatlı kuzu.'} },
+  { emoji:'🥟', img:'foods/içli köfte.jpg', name:{en:'Oruk',tr:'Oruk'}, desc:{en:'Stuffed bulgur dumplings with a savory meat filling.',tr:'Savurmalı et dolgulu bulgur köftesi.'} },
+  { emoji:'🍯', img:'foods/künefe.jpg', name:{en:'Şıllık',tr:'Şıllık'}, desc:{en:'Traditional sesame and grape molasses dessert.',tr:'Geleneksel susam ve pekmez tatlısı.'} },
 ];
 
 const restaurants = [
@@ -2145,7 +2196,10 @@ function renderFood(){
   const grid=document.getElementById('food-grid');
   grid.innerHTML=foods.map((f,i)=>`
     <div class="food-card" data-food="${i}" onclick="trackFood(${i})">
-      <div class="food-emoji">${f.emoji}</div>
+      ${f.img
+        ? `<div style="margin:-16px -16px 12px;overflow:hidden;border-radius:12px 12px 0 0;aspect-ratio:4/3"><img src="${f.img}" alt="${f.name.en}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem\\'>${f.emoji}</div>'"></div>`
+        : `<div class="food-emoji">${f.emoji}</div>`
+      }
       <div class="food-name" data-en="${f.name.en}" data-tr="${f.name.tr}">${f.name[state.lang]}</div>
       <div class="food-desc" data-en="${f.desc.en}" data-tr="${f.desc.tr}">${f.desc[state.lang]}</div>
     </div>
